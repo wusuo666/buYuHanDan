@@ -1,0 +1,7 @@
+{
+  "name": "map",
+  "version": "0.0.1",
+  "description": "map cloud function placeholder",
+  "main": "index.js",
+  "dependencies": {}
+} 

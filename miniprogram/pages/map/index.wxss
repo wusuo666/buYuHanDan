@@ -1,0 +1,6 @@
+.map-wrapper {
+  height: 100vh;
+}
+.info-card {
+  padding: 12px;
+} 

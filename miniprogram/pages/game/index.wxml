@@ -1,0 +1,9 @@
+<view class="section">
+  <!-- 小游戏模块占位：
+    1. 选词填空关卡
+    2. 地点匹配关卡
+    3. 人物对话填空关卡
+    以上关卡统一使用 idioms 集合作为题源，通关数写入 users.level
+  -->
+  <view class="muted">小游戏模块（待开发）：请选择具体子玩法目录进行实现</view>
+</view> 

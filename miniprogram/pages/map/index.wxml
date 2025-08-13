@@ -1,0 +1,8 @@
+<view class="section">
+  <!-- 地图模块占位：
+    1. 使用 map 组件展示邯郸市中心地图
+    2. 使用 markers 绑定云数据库 idioms 集合坐标
+    3. bindmarkertap 打开成语信息卡或跳转详情页
+  -->
+  <view class="muted">地图模块（待开发）：加载地图、标记点、弹出信息卡</view>
+</view> 

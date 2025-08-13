@@ -45,7 +45,7 @@
     "disableSWC": true
   },
   "appid": "wx2ee4cedd9768a22b",
-  "projectname": "quickstart-wx-cloud",
+  "projectname": "handan-idiom-demo-framework",
   "libVersion": "3.9.0",
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
   "condition": {

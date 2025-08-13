@@ -1,14 +1,43 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/example/index"
+    "pages/map/index",
+    "pages/game/index",
+    "pages/rank/index",
+    "pages/admin/index",
+    "pages/idiomDetail/index",
+    "pages/gameFillBlank/index",
+    "pages/gamePlaceMatch/index",
+    "pages/gameDialogFill/index"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "云开发 QuickStart",
+    "navigationBarTitleText": "邯郸成语文化导览（框架）",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#1AAD19",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/map/index",
+        "text": "地图"
+      },
+      {
+        "pagePath": "pages/game/index",
+        "text": "游戏"
+      },
+      {
+        "pagePath": "pages/rank/index",
+        "text": "排行榜"
+      },
+      {
+        "pagePath": "pages/admin/index",
+        "text": "资料"
+      }
+    ]
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2",

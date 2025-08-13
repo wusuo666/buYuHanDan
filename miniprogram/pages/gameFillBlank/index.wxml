@@ -1,0 +1,4 @@
+<view class="section">
+  <!-- 选词填空占位：从 idioms 提取关键句子生成填空 -->
+  <view class="muted">选词填空（待开发）</view>
+</view> 

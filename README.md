@@ -1,12 +1,39 @@
-# 云开发 quickstart
+# 步语邯郸
 
-这是云开发的快速启动指引，其中演示了如何上手使用云开发的三大基础能力：
+仅包含开发框架与占位，无任何具体业务数据。四位同学可分别在各自模块内独立开发，便于并行与合并。
 
-- 数据库：一个既可在小程序前端操作，也能在云函数中读写的 JSON 文档型数据库
-- 文件存储：在小程序前端直接上传/下载云端文件，在云开发控制台可视化管理
-- 云函数：在云端运行的代码，微信私有协议天然鉴权，开发者只需编写业务逻辑代码
+## 模块划分
+- 地图导览：`miniprogram/pages/map/` + 云函数 `cloudfunctions/map`
+- 成语小游戏：`miniprogram/pages/game/` + 云函数 `cloudfunctions/game`
+- 好友排行榜：`miniprogram/pages/rank/` + 云函数 `cloudfunctions/rank`
+- 资料管理：`miniprogram/pages/admin/` + 云函数 `cloudfunctions/admin`
+- 成语详情：`miniprogram/pages/idiomDetail/`（独立页面）
+- 公共服务：`miniprogram/services/`、`miniprogram/utils/`
 
-## 参考文档
+## 数据与集合建议
+统一集合名由 `app.globalData.collections` 控制，默认：
+- `idioms`：成语数据源（地图与游戏共用）
+- `users`：用户数据（含 `level` 通关字段）
 
-- [云开发文档](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/getting-started.html)
+建议 `idioms` 字段示例（可按需调整）：
+```
+{
+  "idiom": "",
+  "location": { "lat": 0, "lng": 0 },
+  "story": "",
+  "scenicSpot": "",
+  "imgUrl": "",
+  "storySegments": [],
+  "relatedCharacters": []
+}
+```
+
+## 路由与导航
+- 底部导航：地图 / 游戏 / 排行榜 / 资料
+- 地图页标记 -> 成语详情页
+
+## 开发提示
+- 仅用微信原生组件与云开发
+- 云环境 ID 请在 `miniprogram/app.js` 的 `globalData.env` 填写
+- 各模块调用云函数统一采用 `{ action: string, ... }` 路由风格
 

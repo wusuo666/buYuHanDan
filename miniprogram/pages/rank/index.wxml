@@ -1,0 +1,8 @@
+<view class="section">
+  <!-- 排行榜模块占位：
+    1. 通过云函数根据好友 openid 列表查询 users.level 并排序
+    2. 展示排名、头像、昵称、level 值
+    3. 支持分享与邀请
+  -->
+  <view class="muted">排行榜模块（待开发）：云函数聚合好友数据并排序</view>
+</view> 

@@ -1,0 +1,7 @@
+{
+  "name": "game",
+  "version": "0.0.1",
+  "description": "game cloud function placeholder",
+  "main": "index.js",
+  "dependencies": {}
+} 
