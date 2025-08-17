@@ -18,6 +18,7 @@
 建议 `idioms` 字段示例（可按需调整）：
 ```
 {
+  "id": "",
   "idiom": "",
   "location": { "lat": 0, "lng": 0 },
   "story": "",
