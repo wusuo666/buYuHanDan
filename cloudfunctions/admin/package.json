@@ -3,5 +3,7 @@
   "version": "0.0.1",
   "description": "admin cloud function placeholder",
   "main": "index.js",
-  "dependencies": {}
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
 } 

@@ -1,3 +1,14 @@
 .admin {
   padding: 16px;
+}
+
+.idiom-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+.idiom-title {
+  font-weight: 600;
+}
+.idiom-sub {
+  font-size: 12px;
 } 
