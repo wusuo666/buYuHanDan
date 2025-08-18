@@ -1,4 +1,22 @@
 <view class="section">
   <!-- 选词填空占位：从 idioms 提取关键句子生成填空 -->
-  <view class="muted">选词填空（待开发）</view>
+  <view class="muted">成语填空游戏</view>
 </view> 
+
+<view class="container">
+  <view class="idiom-container">
+    <block wx:for="{{displayIdiom}}" wx:key="index">
+      <view class="char-box">{{item.char}}</view>
+    </block>
+  </view>
+
+  <view class="input-section">
+    <input class="input-box" placeholder="请填入空缺的字" bindinput="onInput" value="{{userInput}}" maxlength="1" />
+    <button class="submit-button" bindtap="checkAnswer" disabled="{{showResult}}">提交答案</button>
+  </view>
+
+  <view wx:if="{{showResult}}" class="result-section">
+    <view class="result-text {{isCorrect ? 'correct' : 'incorrect'}}">{{resultText}}</view>
+    <button class="next-button" bindtap="getNextIdiom">下一题</button>
+  </view>
+</view>

@@ -1,6 +1,6 @@
 const envList = [
   // 在此添加云环境配置，形如：
-  // { envId: "your-env-id", alias: "dev" }
+  { envId: "cloud1-8gjfo0b251334d85", alias: "dev" }
 ];
 const isMac = false;
 module.exports = {

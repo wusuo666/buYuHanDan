@@ -1,4 +1,4 @@
 {
-  "navigationBarTitleText": "选词填空",
-  "enablePullDownRefresh": false
-} 
+  "usingComponents": {},
+  "navigationBarTitleText": "成语填空"
+}
