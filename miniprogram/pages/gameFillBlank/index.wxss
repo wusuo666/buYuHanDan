@@ -1,3 +1,96 @@
 .fill-blank {
   padding: 16px;
 } 
+
+/* pages/gameFillBlank/index.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx;
+  background-color: #f0f4f7;
+  min-height: 100vh;
+}
+
+.idiom-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 80rpx;
+  margin-bottom: 60rpx;
+}
+
+.char-box {
+  width: 120rpx;
+  height: 120rpx;
+  line-height: 120rpx;
+  text-align: center;
+  font-size: 60rpx;
+  font-weight: bold;
+  color: #333;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  margin: 0 10rpx;
+  border-radius: 10rpx;
+}
+
+.input-section {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 40rpx;
+}
+
+.input-box {
+  width: 400rpx;
+  height: 80rpx;
+  border: 1px solid #ccc;
+  border-radius: 10rpx;
+  padding: 0 20rpx;
+  font-size: 32rpx;
+  text-align: center;
+}
+
+.submit-button {
+  width: 200rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  margin-left: 20rpx;
+  font-size: 32rpx;
+  color: #fff;
+  background-color: #007aff;
+}
+
+.submit-button[disabled] {
+  background-color: #cce4ff;
+  color: #fff;
+}
+
+.result-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40rpx;
+}
+
+.result-text {
+  font-size: 36rpx;
+  margin-bottom: 40rpx;
+}
+
+.result-text.correct {
+  color: #28a745;
+}
+
+.result-text.incorrect {
+  color: #dc3545;
+}
+
+.next-button {
+  width: 300rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  font-size: 36rpx;
+  color: #fff;
+  background-color: #28a745;
+}

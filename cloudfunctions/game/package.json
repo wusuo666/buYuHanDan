@@ -3,5 +3,7 @@
   "version": "0.0.1",
   "description": "game cloud function placeholder",
   "main": "index.js",
-  "dependencies": {}
-} 
+  "dependencies": {
+    "wx-server-sdk": "^3.0.1"
+  }
+}

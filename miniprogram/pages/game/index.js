@@ -5,17 +5,25 @@ Page({
     totalLevels: 0,
     passedLevels: 0,
   },
-  onLoad() {
-    // TODO: 从云获取当前用户通关进度（openid + level）
+  onLoad: function (options) {
+    // You can fetch user's progress here if needed
   },
-  // 子玩法入口占位
+
   startLevelFillBlank() {
-    // TODO: 跳转至 /pages/gameFillBlank/index
+    wx.navigateTo({
+      url: '/pages/gameFillBlank/index'
+    });
   },
+
   startLevelPlaceMatch() {
-    // TODO: 跳转至 /pages/gamePlaceMatch/index
+    wx.navigateTo({
+      url: '/pages/gamePlaceMatch/index'
+    });
   },
+
   startLevelDialogFill() {
-    // TODO: 跳转至 /pages/gameDialogFill/index
+    wx.navigateTo({
+      url: '/pages/gameDialogFill/index'
+    });
   }
 }); 

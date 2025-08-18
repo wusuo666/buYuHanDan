@@ -4,3 +4,47 @@
   gap: 12px;
   padding: 16px;
 } 
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+  box-sizing: border-box;
+  height: 100vh;
+  background-color: #f0f4f7;
+}
+
+.title {
+  font-size: 56rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 80rpx;
+}
+
+.button-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-button {
+  width: 80%;
+  height: 100rpx;
+  line-height: 100rpx;
+  margin-bottom: 40rpx;
+  font-size: 36rpx;
+  color: #fff;
+  background-color: #007aff;
+  border-radius: 50rpx;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.game-button:active {
+  background-color: #0056b3;
+  transform: scale(0.98);
+}
