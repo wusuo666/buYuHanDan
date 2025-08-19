@@ -1,8 +1,136 @@
-<view class="section">
-  <!-- 排行榜模块占位：
-    1. 通过云函数根据好友 openid 列表查询 users.level 并排序
-    2. 展示排名、头像、昵称、level 值
-    3. 支持分享与邀请
-  -->
-  <view class="muted">排行榜模块（待开发）：云函数聚合好友数据并排序</view>
-</view> 
+<!-- pages/rank/index.wxml -->
+<view class="container">
+  <!-- 标签切换 -->
+  <view class="tab-bar">
+    <view 
+      class="tab-item {{currentTab === 'friend' ? 'active' : ''}}"
+      data-tab="friend"
+      bindtap="switchTab"
+    >
+      好友排行
+    </view>
+    <view 
+      class="tab-item {{currentTab === 'global' ? 'active' : ''}}"
+      data-tab="global"
+      bindtap="switchTab"
+    >
+      全球排行
+    </view>
+  </view>
+
+  <!-- 我的排名卡片 -->
+  <view class="my-rank-card" wx:if="{{myRankInfo}}">
+    <view class="my-rank-content">
+      <image 
+        class="my-avatar" 
+        src="{{myRankInfo.avatar || '/images/default-avatar.png'}}"
+        mode="aspectFill"
+      />
+      <view class="my-info">
+        <view class="my-nickname">{{myRankInfo.nickname || '游客'}}</view>
+        <view class="my-stats">
+          <text class="stat-item">排名: {{myRankInfo.rank || '--'}}</text>
+          <text class="stat-item">得分: {{myRankInfo.score || 0}}</text>
+          <text class="stat-item">关卡: {{myRankInfo.level || 0}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="action-buttons">
+      <button class="share-btn" bindtap="generatePoster">
+        <text class="iconfont icon-poster">📷</text>
+        生成海报
+      </button>
+      <button class="share-btn" open-type="share">
+        <text class="iconfont icon-share">📤</text>
+        分享好友
+      </button>
+    </view>
+  </view>
+
+  <!-- 未授权提示 -->
+  <view class="auth-tip" wx:if="{{!hasUserInfo}}">
+    <text class="tip-text">授权后可查看完整排行榜</text>
+    <button class="auth-btn" bindtap="getUserProfile">立即授权</button>
+  </view>
+
+  <!-- 排行榜列表 -->
+  <scroll-view 
+    class="rank-list"
+    scroll-y
+    enable-back-to-top
+    bindscrolltolower="onReachBottom"
+  >
+    <view class="rank-item" wx:for="{{rankList}}" wx:key="_id">
+      <!-- 排名标识 -->
+      <view class="rank-number {{item.rank <= 3 ? 'top-' + item.rank : ''}}">
+        <text wx:if="{{item.rank <= 3}}" class="medal">{{item.rank === 1 ? '🥇' : item.rank === 2 ? '🥈' : '🥉'}}</text>
+        <text wx:else>{{item.rank}}</text>
+      </view>
+      
+      <!-- 用户头像 -->
+      <image 
+        class="user-avatar" 
+        src="{{item.avatar || '/images/default-avatar.png'}}"
+        mode="aspectFill"
+      />
+      
+      <!-- 用户信息 -->
+      <view class="user-info">
+        <view class="user-nickname">
+          {{item.nickname || '游客'}}
+          <text class="tag-me" wx:if="{{item.isMe}}">我</text>
+        </view>
+        <view class="user-progress">
+          <text class="progress-item">{{item.score || 0}}分</text>
+          <text class="progress-item">第{{item.level || 0}}关</text>
+          <text class="progress-item" wx:if="{{item.unlockedSpots}}">{{item.unlockedSpots.length}}个景点</text>
+        </view>
+      </view>
+      
+      <!-- 分数 -->
+      <view class="score-display">
+        <text class="score-number">{{item.score || 0}}</text>
+        <text class="score-label">分</text>
+      </view>
+    </view>
+
+    <!-- 加载提示 -->
+    <view class="loading-tip" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+    
+    <!-- 没有更多 -->
+    <view class="no-more-tip" wx:if="{{!hasMore && rankList.length > 0}}">
+      <text>没有更多了</text>
+    </view>
+    
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && rankList.length === 0}}">
+      <image class="empty-icon" src="/images/empty.png" mode="aspectFit" />
+      <text class="empty-text">暂无排行数据</text>
+      <text class="empty-sub">快去游戏中创造你的记录吧！</text>
+      <navigator url="/pages/game/index" open-type="switchTab">
+        <button class="go-game-btn">开始游戏</button>
+      </navigator>
+    </view>
+  </scroll-view>
+
+  <!-- 海报弹窗 -->
+  <view class="poster-modal" wx:if="{{showPoster}}" bindtap="closePoster">
+    <view class="poster-container" catchtap="doNothing">
+      <image class="poster-image" src="{{posterUrl}}" mode="aspectFit" />
+      <view class="poster-actions">
+        <button class="poster-btn save-btn" bindtap="savePoster">保存到相册</button>
+        <button class="poster-btn cancel-btn" bindtap="closePoster">取消</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- Canvas用于生成海报 -->
+  <canvas 
+    type="2d" 
+    id="posterCanvas" 
+    class="poster-canvas"
+    style="width: 375px; height: 667px; position: fixed; left: -9999px;"
+  />
+</view>
