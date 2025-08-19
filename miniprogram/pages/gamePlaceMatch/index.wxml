@@ -1,4 +1,35 @@
-<view class="section">
-  <!-- 地点匹配占位：给出3张图，选择正确发源地 -->
-  <view class="muted">地点匹配（待开发）</view>
-</view> 
+<view class="container">
+  <view class="game-area">
+    <!-- 成语列表 -->
+    <view class="idiom-list">
+      <view
+        wx:for="{{idioms}}"
+        wx:key="{{item.id}}"
+        data-id="{{item.id}}"
+        class="idiom-item {{item.matched ? 'matched' : ''}} {{selectedIdiom === item.id ? 'selected' : ''}}"
+        bindtap="selectIdiom"
+      >
+        {{item.idiom}}
+      </view>
+    </view>
+
+    <!-- 地点列表 -->
+    <view class="location-list">
+      <view
+        wx:for="{{locations}}"
+        wx:key="{{item.id}}"
+        data-id="{{item.id}}"
+        class="location-item {{item.matched ? 'matched' : ''}} {{selectedLocation === item.id ? 'selected' : ''}}"
+        bindtap="selectLocation"
+      >
+        {{item.location}}
+      </view>
+    </view>
+  </view>
+
+  <view class="score-area">
+    <text>得分: {{score}}</text>
+  </view>
+
+  <button class="reset-button" bindtap="resetGame">重新开始</button>
+</view>

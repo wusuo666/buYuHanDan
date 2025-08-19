@@ -13,7 +13,7 @@ exports.main = async (event, context) => {
   } = event;
 
   switch (action) {
-    case 'getRandomIdiom':
+    case 'getRandomIdiom':   //获取随机成语云函数，对应成语填空游戏
       try {
         // 优化：使用 projection 只返回必需的 idiom 字段和 _id
         const randomResult = await db.collection('idiom').aggregate()
@@ -42,6 +42,39 @@ exports.main = async (event, context) => {
         return {
           success: false,
           message: '查询数据库时发生错误'
+        };
+      }
+    case 'getGameData':   //成语地点匹配游戏云函数
+      try {
+        const count = event.count || 2; // 默认获取2个，可根据需要传入event.count来获取更多
+        const gameData = await db.collection('idiom').aggregate()
+          .sample({
+            size: count
+          })
+          .project({
+            idiom: 1,
+            scenicSpot: 1,
+            'location.address': 1,
+            _id: 0
+          })
+          .end();
+
+        if (gameData.list && gameData.list.length > 0) {
+          return {
+            success: true,
+            data: gameData.list
+          };
+        } else {
+          return {
+            success: false,
+            message: '未能获取游戏数据'
+          };
+        }
+      } catch (e) {
+        console.error('getGameData error:', e);
+        return {
+          success: false,
+          message: '查询游戏数据时发生错误'
         };
       }
     default:
