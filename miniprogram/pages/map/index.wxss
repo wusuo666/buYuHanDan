@@ -1,6 +1,156 @@
-.map-wrapper {
+/* 地图容器 */
+.map-container {
+  width: 100%;
   height: 100vh;
+  position: relative;
 }
-.info-card {
-  padding: 12px;
-} 
+
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+/* 控件样式 */
+.controls-container {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.control-item {
+  background: #fff;
+  padding: 16rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.control-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.control-item cover-text {
+  font-size: 24rpx;
+  color: #333;
+}
+
+/* 弹窗样式 */
+.popup-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  width: 85%;
+  max-height: 70vh;
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+
+.popup-header {
+  padding: 30rpx;
+  background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.idiom-title {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.close-btn {
+  font-size: 40rpx;
+  font-weight: bold;
+  padding: 10rpx 20rpx;
+}
+
+.popup-body {
+  padding: 30rpx;
+  max-height: 50vh;
+}
+
+.info-item {
+  margin-bottom: 24rpx;
+  line-height: 1.6;
+}
+
+.label {
+  font-weight: bold;
+  color: #333;
+  margin-right: 12rpx;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.value {
+  color: #666;
+  display: block;
+}
+
+.segments-container {
+  margin-top: 10rpx;
+}
+
+.segment-item {
+  display: block;
+  color: #666;
+  margin-bottom: 6rpx;
+  font-size: 28rpx;
+}
+
+.images-container {
+  margin-top: 30rpx;
+}
+
+.images-scroll {
+  white-space: nowrap;
+  margin-top: 15rpx;
+}
+
+.idiom-image {
+  width: 200rpx;
+  height: 150rpx;
+  border-radius: 12rpx;
+  margin-right: 20rpx;
+}
+
+/* 加载提示 */
+.loading-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.7);
+  padding: 30rpx 50rpx;
+  border-radius: 16rpx;
+}
+
+.loading-text {
+  color: white;
+  font-size: 32rpx;
+}
+
+/* 阻止事件冒泡 */
+.stop-propagation {
+  pointer-events: auto;
+}
+

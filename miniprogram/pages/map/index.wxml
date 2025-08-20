@@ -1,8 +1,91 @@
-<view class="section">
-  <!-- 地图模块占位：
-    1. 使用 map 组件展示邯郸市中心地图
-    2. 使用 markers 绑定云数据库 idioms 集合坐标
-    3. bindmarkertap 打开成语信息卡或跳转详情页
-  -->
-  <view class="muted">地图模块（待开发）：加载地图、标记点、弹出信息卡</view>
-</view> 
+<!-- 地图容器 -->
+<view class="map-container">
+  <map 
+    id="idiomMap" 
+    class="map" 
+    latitude="{{latitude}}" 
+    longitude="{{longitude}}" 
+    scale="{{scale}}" 
+    markers="{{markers}}"
+    show-location
+    bindmarkertap="onMarkerTap"
+  >
+    <!-- 地图控件：定位到邯郸 -->
+    <cover-view class="controls-container">
+      <cover-view class="control-item" bindtap="moveToHandan">
+        <cover-image src="/images/location-icon.png" class="control-icon"></cover-image>
+        <cover-text>定位邯郸</cover-text>
+      </cover-view>
+    </cover-view>
+  </map>
+
+  <!-- 自定义弹窗 -->
+  <view wx:if="{{showPopup}}" class="popup-mask" bindtap="closePopup">
+    <view class="popup-content" catchtap="stopPropagation">
+      <!-- 弹窗头部 -->
+      <view class="popup-header">
+        <text class="idiom-title">{{currentIdiom.name || '成语详情'}}</text>
+        <text class="close-btn" bindtap="closePopup">×</text>
+      </view>
+      
+      <!-- 弹窗内容 -->
+      <scroll-view class="popup-body" scroll-y>
+        <!-- 景点信息 -->
+        <view class="info-item" wx:if="{{currentIdiom.scenicSpot}}">
+          <text class="label">相关景点：</text>
+          <text class="value">{{currentIdiom.scenicSpot}}</text>
+        </view>
+        
+        <!-- 地址信息 -->
+        <view class="info-item" wx:if="{{currentIdiom.address}}">
+          <text class="label">地址：</text>
+          <text class="value">{{currentIdiom.address}}</text>
+        </view>
+        
+        <!-- 位置坐标 -->
+        <view class="info-item" wx:if="{{currentIdiom.location}}">
+          <text class="label">位置：</text>
+          <text class="value">{{currentIdiom.location}}</text>
+        </view>
+        
+        <!-- 故事内容 -->
+        <view class="info-item" wx:if="{{currentIdiom.story}}">
+          <text class="label">故事：</text>
+          <text class="value">{{currentIdiom.story}}</text>
+        </view>
+        
+        <!-- 关联人物 -->
+        <view class="info-item" wx:if="{{currentIdiom.relatedCharacters && currentIdiom.relatedCharacters.length}}">
+          <text class="label">关联人物：</text>
+          <text class="value">{{currentIdiom.relatedCharacters.join('、')}}</text>
+        </view>
+        
+        <!-- 故事片段 -->
+        <view class="info-item" wx:if="{{currentIdiom.storySegments && currentIdiom.storySegments.length}}">
+          <text class="label">故事片段：</text>
+          <view class="segments-container">
+            <block wx:for="{{currentIdiom.storySegments}}" wx:key="index">
+              <text class="segment-item">{{index + 1}}.{{item}}</text>
+            </block>
+          </view>
+        </view>
+        
+        <!-- 图片展示 -->
+        <view class="info-item" wx:if="{{currentIdiom.images && currentIdiom.images.length}}">
+          <text class="label">相关图片：</text>
+          <scroll-view class="images-scroll" scroll-x>
+            <block wx:for="{{currentIdiom.images}}" wx:key="index">
+              <image class="idiom-image" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-url="{{item}}"></image>
+            </block>
+          </scroll-view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 加载提示 -->
+  <view wx:if="{{isLoading}}" class="loading-container">
+    <text class="loading-text">加载中...</text>
+  </view>
+</view>
+

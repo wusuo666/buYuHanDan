@@ -1,4 +1,7 @@
 {
-  "navigationBarTitleText": "地图导览",
-  "enablePullDownRefresh": false
-} 
+  "usingComponents": {},
+  "navigationBarTitleText": "邯郸成语地图导览",
+  "enablePullDownRefresh": false,
+  "backgroundColor": "#f7f7f7"
+}
+

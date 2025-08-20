@@ -3,7 +3,7 @@ App({
   onLaunch: function () {
     this.globalData = {
       // 云环境占位：开发者在此填写自己的环境 ID
-      env: "", // e.g. "your-env-id"
+      env: "cloud1-8gjfo0b251334d85", // e.g. "your-env-id"
       // 统一集合名称，地图/游戏共用
       collections: {
         idioms: "idioms",
