@@ -30,81 +30,25 @@ Page({
   },
 
   onLoad() {
-    // 先设置默认的我的排名数据，确保卡片显示
-    this.setData({
-      myRankInfo: {
-        rank: '--',
-        total: '--',
-        nickname: '游客',
-        avatar: '/images/avatar.png',
-        score: 0,
-        level: 0,
-        unlockedSpots: []
-      },
-      hasUserInfo: true, // 默认设置为true，显示所有按钮
-      // 设置默认的模拟排行榜数据
-      rankList: [
-        {
-          _id: '1',
-          rank: 1,
-          nickname: '成语达人',
-          avatar: '/images/avatar.png',
-          score: 9800,
-          level: 45,
-          unlockedSpots: ['丛台', '学步桥', '赵苑', '回车巷', '黄粱梦'],
-          isMe: false
-        },
-        {
-          _id: '2',
-          rank: 2,
-          nickname: '文化探索者',
-          avatar: '/images/avatar.png',
-          score: 9200,
-          level: 42,
-          unlockedSpots: ['丛台', '学步桥', '赵苑', '回车巷'],
-          isMe: false
-        },
-        {
-          _id: '3',
-          rank: 3,
-          nickname: '邯郸游客',
-          avatar: '/images/avatar.png',
-          score: 8800,
-          level: 38,
-          unlockedSpots: ['丛台', '学步桥', '赵苑'],
-          isMe: false
-        }
-      ]
-    });
-    
-    // 然后尝试获取用户信息和加载真实数据
     this.initUserInfo();
-    // 延迟加载真实数据，避免覆盖默认数据
-    setTimeout(() => {
-      this.loadRankData();
-    }, 500);
+    this.loadRankData();
   },
 
   onShow() {
-    // 如果已经有数据，不重新加载，避免覆盖
-    if (!this.data.myRankInfo || this.data.rankList.length === 0) {
-      this.loadRankData();
-    }
+    // 每次显示时刷新数据
+    this.loadRankData();
   },
 
   // 初始化用户信息
   async initUserInfo() {
     try {
-      // 尝试从本地存储获取用户信息
-      const storedUserInfo = wx.getStorageSync('userInfo');
-      if (storedUserInfo) {
+      // 获取用户信息
+      const setting = await wx.getSetting();
+      if (setting.authSetting['scope.userInfo']) {
+        const userInfo = await wx.getUserInfo();
         this.setData({
-          userInfo: storedUserInfo,
-          myRankInfo: {
-            ...this.data.myRankInfo,
-            nickname: storedUserInfo.nickName,
-            avatar: storedUserInfo.avatarUrl
-          }
+          userInfo: userInfo.userInfo,
+          hasUserInfo: true
         });
       }
     } catch (error) {
@@ -114,55 +58,23 @@ Page({
 
   // 获取用户信息按钮回调
   getUserProfile(e) {
-    // 兼容性处理：优先使用 getUserProfile，不支持则使用 getUserInfo
-    if (wx.getUserProfile) {
-      wx.getUserProfile({
-        desc: '用于排行榜展示头像昵称',
-        success: (res) => {
-          // 保存到本地存储
-          wx.setStorageSync('userInfo', res.userInfo);
-          
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true,
-            // 更新我的排名信息中的昵称和头像
-            myRankInfo: {
-              ...this.data.myRankInfo,
-              nickname: res.userInfo.nickName,
-              avatar: res.userInfo.avatarUrl
-            }
-          });
-          // 更新到云端
-          this.updateUserProgress(res.userInfo);
-          
-          wx.showToast({
-            title: '登录成功',
-            icon: 'success'
-          });
-        },
-        fail: () => {
-          wx.showToast({
-            title: '登录失败',
-            icon: 'none'
-          });
-        }
-      });
-    } else {
-      // 使用旧版 getUserInfo（通过 button 的 open-type）
-      wx.showModal({
-        title: '提示',
-        content: '请点击确定进行授权',
-        success: (res) => {
-          if (res.confirm) {
-            // 这里需要配合 button 的 open-type="getUserInfo" 使用
-            wx.showToast({
-              title: '请使用授权按钮',
-              icon: 'none'
-            });
-          }
-        }
-      });
-    }
+    wx.getUserProfile({
+      desc: '用于排行榜展示头像昵称',
+      success: (res) => {
+        this.setData({
+          userInfo: res.userInfo,
+          hasUserInfo: true
+        });
+        // 更新到云端
+        this.updateUserProgress(res.userInfo);
+      },
+      fail: () => {
+        wx.showToast({
+          title: '需要授权才能显示排行榜',
+          icon: 'none'
+        });
+      }
+    });
   },
 
   // 更新用户进度到云端
@@ -187,8 +99,6 @@ Page({
       }
     } catch (error) {
       console.error('更新用户信息失败:', error);
-      // 使用模拟数据
-      this.loadMockData();
     }
   },
 
@@ -199,7 +109,6 @@ Page({
     this.setData({ loading: true });
     
     try {
-      // 首先尝试调用云函数
       if (this.data.currentTab === 'friend') {
         await this.loadFriendRanks();
       } else {
@@ -208,84 +117,22 @@ Page({
       
       // 获取我的排名
       await this.getMyRank();
-      
     } catch (error) {
-      console.error('加载排行榜失败，使用模拟数据:', error);
-      // 如果云函数失败，使用模拟数据
-      this.loadMockData();
+      console.error('加载排行榜失败:', error);
+      wx.showToast({
+        title: '加载失败，请重试',
+        icon: 'none'
+      });
     } finally {
       this.setData({ loading: false });
     }
   },
 
-  // 加载模拟数据（当云函数不可用时）
-  loadMockData() {
-    const mockData = {
-      rankList: [
-        {
-          _id: '1',
-          rank: 1,
-          nickname: '成语达人',
-          avatar: '/images/avatar.png',
-          score: 9800,
-          level: 45,
-          unlockedSpots: ['丛台', '学步桥', '赵苑', '回车巷', '黄粱梦'],
-          isMe: false
-        },
-        {
-          _id: '2',
-          rank: 2,
-          nickname: '文化探索者',
-          avatar: '/images/avatar.png',
-          score: 9200,
-          level: 42,
-          unlockedSpots: ['丛台', '学步桥', '赵苑', '回车巷'],
-          isMe: false
-        },
-        {
-          _id: '3',
-          rank: 3,
-          nickname: '邯郸游客',
-          avatar: '/images/avatar.png',
-          score: 8800,
-          level: 38,
-          unlockedSpots: ['丛台', '学步桥', '赵苑'],
-          isMe: false
-        },
-        {
-          _id: '4',
-          rank: 4,
-          nickname: '历史爱好者',
-          avatar: '/images/avatar.png',
-          score: 8500,
-          level: 36,
-          unlockedSpots: ['丛台', '学步桥'],
-          isMe: false
-        }
-      ],
-      myRankInfo: {
-        rank: 5,
-        total: 156,
-        nickname: '我',
-        avatar: '/images/avatar.png',
-        score: 8200,
-        level: 35,
-        unlockedSpots: ['丛台', '学步桥', '赵苑']
-      }
-    };
-
-    // 设置数据
-    this.setData({
-      rankList: mockData.rankList,
-      myRankInfo: mockData.myRankInfo,
-      hasMore: false,
-      hasUserInfo: true // 模拟数据时设置为true，显示排行榜
-    });
-  },
-
   // 加载好友排行榜
   async loadFriendRanks() {
     try {
+      // 这里可以通过微信关系链获取好友openid列表
+      // 目前先使用模拟数据或不传参数
       const res = await wx.cloud.callFunction({
         name: 'rank',
         data: {
@@ -294,16 +141,13 @@ Page({
         }
       });
       
-      if (res.result && res.result.code === 0) {
+      if (res.result.code === 0) {
         this.setData({
           rankList: res.result.data || []
         });
-      } else {
-        throw new Error('云函数返回错误');
       }
     } catch (error) {
       console.error('加载好友排行榜失败:', error);
-      throw error; // 抛出错误，让上层处理
     }
   },
 
@@ -319,7 +163,7 @@ Page({
         }
       });
       
-      if (res.result && res.result.code === 0) {
+      if (res.result.code === 0) {
         const data = res.result.data;
         
         // 如果是第一页，直接设置；否则追加
@@ -331,12 +175,9 @@ Page({
           rankList,
           hasMore: rankList.length < data.total
         });
-      } else {
-        throw new Error('云函数返回错误');
       }
     } catch (error) {
       console.error('加载全球排行榜失败:', error);
-      throw error; // 抛出错误，让上层处理
     }
   },
 
@@ -350,25 +191,13 @@ Page({
         }
       });
       
-      if (res.result && res.result.code === 0) {
+      if (res.result.code === 0) {
         this.setData({
           myRankInfo: res.result.data
         });
       }
     } catch (error) {
       console.error('获取我的排名失败:', error);
-      // 如果失败，使用模拟的我的排名数据
-      this.setData({
-        myRankInfo: {
-          rank: 5,
-          total: 156,
-          nickname: '我',
-          avatar: '/images/avatar.png',
-          score: 8200,
-          level: 35,
-          unlockedSpots: ['丛台', '学步桥', '赵苑']
-        }
-      });
     }
   },
 
@@ -410,14 +239,16 @@ Page({
     }
   },
 
-  // 空方法，防止事件冒泡
-  doNothing() {
-    // 空方法，防止事件冒泡
-  },
-
   // 生成分享海报
   async generatePoster() {
-    // 移除对 hasUserInfo 的强制要求，允许游客生成海报
+    if (!this.data.hasUserInfo) {
+      wx.showToast({
+        title: '请先授权用户信息',
+        icon: 'none'
+      });
+      return;
+    }
+    
     wx.showLoading({ title: '生成中...' });
     
     try {
@@ -525,6 +356,19 @@ Page({
         ctx.fillText('暂无解锁景点，快来挑战吧！', 187, 340);
       }
       
+      // 进度条
+      ctx.fillStyle = '#E8F5E8';
+      ctx.fillRect(30, 480, 315, 20);
+      ctx.fillStyle = '#1AAD19';
+      const progress = Math.min((myInfo.level || 0) / 50, 1); // 假设总共50关
+      ctx.fillRect(30, 480, 315 * progress, 20);
+      
+      // 进度文字
+      ctx.fillStyle = '#333333';
+      ctx.font = '14px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(`成语学习进度: ${Math.round(progress * 100)}%`, 187, 515);
+      
       // 底部引导
       ctx.fillStyle = '#1AAD19';
       ctx.fillRect(30, 520, 315, 100);
@@ -623,33 +467,5 @@ Page({
       title: `邯郸成语文化导览 - 已解锁${(myInfo.unlockedSpots || []).length}个景点`,
       query: 'from=timeline'
     };
-  },
-
-  // 手动分享到朋友圈
-  async shareToTimeline() {
-    // 移除对 hasUserInfo 的强制要求
-    try {
-      // 先生成海报
-      await this.generatePoster();
-      
-      // 显示分享提示
-      wx.showModal({
-        title: '分享到朋友圈',
-        content: '海报已生成，请保存到相册后分享到朋友圈',
-        confirmText: '保存海报',
-        cancelText: '取消',
-        success: (res) => {
-          if (res.confirm) {
-            this.savePoster();
-          }
-        }
-      });
-    } catch (error) {
-      console.error('分享到朋友圈失败:', error);
-      wx.showToast({
-        title: '分享失败',
-        icon: 'none'
-      });
-    }
   }
 });

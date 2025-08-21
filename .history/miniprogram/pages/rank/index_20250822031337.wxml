@@ -18,29 +18,22 @@
     </view>
   </view>
 
-  <!-- 我的排名卡片 - 始终显示 -->
-  <view class="my-rank-card">
+  <!-- 我的排名卡片 -->
+  <view class="my-rank-card" wx:if="{{myRankInfo}}">
     <view class="my-rank-content">
       <image 
         class="my-avatar" 
-        src="{{myRankInfo.avatar || '/images/default-avatar.png'}}"
+        src="{{myRankInfo.avatar || '/images/avatar.png'}}"
         mode="aspectFill"
       />
       <view class="my-info">
-        <view class="my-nickname">
-          {{myRankInfo.nickname || '游客'}}
-          <text class="guest-tip" wx:if="{{!userInfo}}">(未登录)</text>
-        </view>
+        <view class="my-nickname">{{myRankInfo.nickname || '游客'}}</view>
         <view class="my-stats">
           <text class="stat-item">排名: {{myRankInfo.rank || '--'}}</text>
           <text class="stat-item">得分: {{myRankInfo.score || 0}}</text>
           <text class="stat-item">关卡: {{myRankInfo.level || 0}}</text>
         </view>
       </view>
-      <!-- 可选的登录按钮 -->
-      <button wx:if="{{!userInfo}}" class="login-btn-small" bindtap="getUserProfile">
-        登录
-      </button>
     </view>
     <view class="action-buttons">
       <button class="share-btn" bindtap="generatePoster">
@@ -53,9 +46,15 @@
       </button>
       <button class="share-btn timeline-btn" bindtap="shareToTimeline">
         <text class="iconfont icon-timeline">🌐</text>
-        朋友圈
+        分享朋友圈
       </button>
     </view>
+  </view>
+
+  <!-- 未授权提示 -->
+  <view class="auth-tip" wx:if="{{!hasUserInfo}}">
+    <text class="tip-text">授权后可查看完整排行榜</text>
+    <button class="auth-btn" bindtap="getUserProfile">立即授权</button>
   </view>
 
   <!-- 排行榜列表 -->
@@ -65,7 +64,6 @@
     enable-back-to-top
     bindscrolltolower="onReachBottom"
   >
-    <!-- 排行榜项目 -->
     <view class="rank-item" wx:for="{{rankList}}" wx:key="_id">
       <!-- 排名标识 -->
       <view class="rank-number {{item.rank <= 3 ? 'top-' + item.rank : ''}}">
@@ -76,7 +74,7 @@
       <!-- 用户头像 -->
       <image 
         class="user-avatar" 
-        src="{{item.avatar || '/images/default-avatar.png'}}"
+        src="{{item.avatar || '/images/avatar.png'}}"
         mode="aspectFill"
       />
       
@@ -110,15 +108,10 @@
       <text>没有更多了</text>
     </view>
     
-    <!-- 空状态 - 只在没有数据时显示 -->
+    <!-- 空状态 -->
     <view class="empty-state" wx:if="{{!loading && rankList.length === 0}}">
-<<<<<<< Updated upstream
-      <image class="empty-icon" src="/images/empty.png" mode="aspectFit" />
-      <text class="empty-text">暂无排行数据</text>
-=======
       <view class="empty-icon">📊</view>
-      <text class="empty-text">暂无更多排行数据</text>
->>>>>>> Stashed changes
+      <text class="empty-text">暂无排行数据</text>
       <text class="empty-sub">快去游戏中创造你的记录吧！</text>
       <navigator url="/pages/game/index" open-type="switchTab">
         <button class="go-game-btn">开始游戏</button>
