@@ -6,153 +6,6 @@
   background-color: #f0f4f7;
 }
 
-/* 空状态样式 */
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 100rpx 40rpx;
-  text-align: center;
-}
-
-.empty-icon {
-  font-size: 120rpx;
-  margin-bottom: 30rpx;
-  color: #cccccc;
-}
-
-.empty-text {
-  font-size: 36rpx;
-  color: #666666;
-  margin-bottom: 20rpx;
-  font-weight: bold;
-}
-
-.empty-sub {
-  font-size: 28rpx;
-  color: #999999;
-  margin-bottom: 40rpx;
-  line-height: 1.5;
-}
-
-.go-game-btn {
-  background: linear-gradient(135deg, #1AAD19 0%, #2ECC71 100%);
-  color: #ffffff;
-  border: none;
-  border-radius: 50rpx;
-  padding: 20rpx 60rpx;
-  font-size: 32rpx;
-  font-weight: bold;
-  box-shadow: 0 8rpx 20rpx rgba(26, 173, 25, 0.3);
-}
-
-/* 标签切换 */
-.tab-bar {
-  display: flex;
-  height: 100rpx;
-  background-color: #ffffff;
-  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
-}
-
-.tab-item {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32rpx;
-  color: #666666;
-  position: relative;
-  transition: all 0.3s;
-}
-
-.tab-item.active {
-  color: #1AAD19;
-  font-weight: bold;
-}
-
-.tab-item.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60rpx;
-  height: 6rpx;
-  background-color: #1AAD19;
-  border-radius: 3rpx;
-}
-
-/* 我的排名卡片 */
-.my-rank-card {
-  margin: 20rpx;
-  padding: 30rpx;
-  background: linear-gradient(135deg, #1AAD19 0%, #2ECC71 100%);
-  border-radius: 20rpx;
-  box-shadow: 0 10rpx 30rpx rgba(26, 173, 25, 0.2);
-}
-
-/* 我的排名内容 */
-.my-rank-content {
-  display: flex;
-  align-items: center;
-  gap: 30rpx;
-  position: relative;
-}
-
-.my-avatar {
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50%;
-  border: 4rpx solid rgba(255, 255, 255, 0.3);
-}
-
-.my-info {
-  flex: 1;
-}
-
-.my-nickname {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #ffffff;
-  margin-bottom: 20rpx;
-}
-
-.guest-tip {
-  font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.7);
-  margin-left: 10rpx;
-}
-
-.my-stats {
-  display: flex;
-  gap: 30rpx;
-  flex-wrap: wrap;
-}
-
-.stat-item {
-  font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.1);
-  padding: 8rpx 16rpx;
-  border-radius: 20rpx;
-}
-
-/* 小登录按钮 */
-.login-btn-small {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  border: 2rpx solid rgba(255, 255, 255, 0.3);
-  border-radius: 30rpx;
-  padding: 10rpx 30rpx;
-  font-size: 24rpx;
-  font-weight: bold;
-}
-
 /* 分享按钮样式 */
 .action-buttons {
   display: flex;
@@ -167,14 +20,10 @@
   border: 2rpx solid rgba(255, 255, 255, 0.3);
   border-radius: 50rpx;
   padding: 20rpx 0;
-  font-size: 26rpx;
+  font-size: 28rpx;
   font-weight: bold;
   backdrop-filter: blur(10rpx);
   transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8rpx;
 }
 
 .share-btn:active {
@@ -189,104 +38,6 @@
 
 .timeline-btn:active {
   background: linear-gradient(135deg, #FF5252 0%, #FF7043 100%);
-}
-
-/* 排行榜列表 */
-.rank-list {
-  flex: 1;
-  padding: 0 20rpx;
-}
-
-.rank-item {
-  display: flex;
-  align-items: center;
-  padding: 30rpx;
-  margin-bottom: 20rpx;
-  background: #ffffff;
-  border-radius: 20rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
-}
-
-.rank-number {
-  width: 80rpx;
-  height: 80rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #666666;
-  margin-right: 30rpx;
-}
-
-.rank-number.top-1 {
-  color: #FFD700;
-}
-
-.rank-number.top-2 {
-  color: #C0C0C0;
-}
-
-.rank-number.top-3 {
-  color: #CD7F32;
-}
-
-.medal {
-  font-size: 40rpx;
-}
-
-.user-avatar {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  margin-right: 30rpx;
-}
-
-.user-info {
-  flex: 1;
-}
-
-.user-nickname {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333333;
-  margin-bottom: 10rpx;
-}
-
-.tag-me {
-  background: #1AAD19;
-  color: #ffffff;
-  font-size: 20rpx;
-  padding: 4rpx 12rpx;
-  border-radius: 20rpx;
-  margin-left: 20rpx;
-}
-
-.user-progress {
-  display: flex;
-  gap: 20rpx;
-  flex-wrap: wrap;
-}
-
-.progress-item {
-  font-size: 24rpx;
-  color: #666666;
-}
-
-.score-display {
-  text-align: right;
-}
-
-.score-number {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #1AAD19;
-  display: block;
-}
-
-.score-label {
-  font-size: 24rpx;
-  color: #999999;
 }
 
 /* 空状态样式 */
@@ -382,6 +133,233 @@
 .cancel-btn {
   background: #f5f5f5;
   color: #666666;
+}
+
+/* 标签切换 */
+.tab-bar {
+  display: flex;
+  height: 100rpx;
+  background-color: #ffffff;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  color: #666666;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.tab-item.active {
+  color: #1AAD19;
+  font-weight: bold;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 6rpx;
+  background-color: #1AAD19;
+  border-radius: 3rpx;
+}
+
+/* 我的排名卡片 */
+.my-rank-card {
+  margin: 20rpx;
+  padding: 30rpx;
+  background: linear-gradient(135deg, #1AAD19 0%, #2ECC71 100%);
+  border-radius: 20rpx;
+  box-shadow: 0 10rpx 30rpx rgba(26, 173, 25, 0.2);
+}
+
+
+/* 我的排名内容 */
+.my-rank-content {
+  display: flex;
+  align-items: center;
+  gap: 30rpx;
+}
+
+.my-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+}
+
+.my-info {
+  flex: 1;
+}
+
+.my-nickname {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 20rpx;
+}
+
+.my-stats {
+  display: flex;
+  gap: 30rpx;
+}
+
+.stat-item {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+/* 授权提示样式 */
+.auth-tip {
+  text-align: center;
+  padding: 60rpx 40rpx;
+  background: #ffffff;
+  margin: 20rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.tip-text {
+  font-size: 28rpx;
+  color: #666666;
+  margin-bottom: 30rpx;
+  display: block;
+}
+
+.auth-btn {
+  background: linear-gradient(135deg, #1AAD19 0%, #2ECC71 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 50rpx;
+  padding: 20rpx 60rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+.rank-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #ffffff;
+}
+
+.rank-number {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.rank-label {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 10rpx;
+}
+
+/* 排行榜项目样式 */
+.rank-list {
+  flex: 1;
+  padding: 0 20rpx;
+}
+
+.rank-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  background: #ffffff;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.rank-number {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #666666;
+  margin-right: 30rpx;
+}
+
+.rank-number.top-1 {
+  color: #FFD700;
+}
+
+.rank-number.top-2 {
+  color: #C0C0C0;
+}
+
+.rank-number.top-3 {
+  color: #CD7F32;
+}
+
+.medal {
+  font-size: 40rpx;
+}
+
+.user-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 30rpx;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-nickname {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 10rpx;
+}
+
+.tag-me {
+  background: #1AAD19;
+  color: #ffffff;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+  margin-left: 20rpx;
+}
+
+.user-progress {
+  display: flex;
+  gap: 20rpx;
+}
+
+.progress-item {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.score-display {
+  text-align: right;
+}
+
+.score-number {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1AAD19;
+  display: block;
+}
+
+.score-label {
+  font-size: 24rpx;
+  color: #999999;
 }
 
 /* 加载提示样式 */
