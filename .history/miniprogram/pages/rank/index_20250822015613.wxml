@@ -70,7 +70,7 @@
       <!-- 用户头像 -->
       <image 
         class="user-avatar" 
-        src="{{item.avatar || '/images/avatar.png'}}"
+        src="{{item.avatar || '/images/default-avatar.png'}}"
         mode="aspectFill"
       />
       

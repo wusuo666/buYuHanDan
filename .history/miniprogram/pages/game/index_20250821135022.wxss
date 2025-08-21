@@ -1,0 +1,333 @@
+.entry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+} 
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx;
+  box-sizing: border-box;
+  min-height: 100vh;
+  background-color: #f0f4f7;
+}
+
+/* 用户信息卡片 */
+.user-card {
+  background: linear-gradient(135deg, #1AAD19 0%, #2ECC71 100%);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 10rpx 30rpx rgba(26, 173, 25, 0.2);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.user-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50rpx;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+  margin-right: 20rpx;
+}
+
+.user-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.user-nickname {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.progress-info {
+  display: flex;
+  align-items: center;
+}
+
+.progress-text {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.share-section {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.share-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: none;
+  border-radius: 30rpx;
+  padding: 15rpx 30rpx;
+  font-size: 26rpx;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  transition: all 0.3s;
+}
+
+.share-btn:active {
+  transform: scale(0.95);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.share-icon {
+  font-size: 28rpx;
+}
+
+/* 授权提示 */
+.auth-tip {
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.tip-text {
+  display: block;
+  font-size: 30rpx;
+  color: #666666;
+  margin-bottom: 30rpx;
+}
+
+.auth-btn {
+  background: #1AAD19;
+  color: #ffffff;
+  border: none;
+  border-radius: 40rpx;
+  padding: 20rpx 40rpx;
+  font-size: 30rpx;
+}
+
+/* 游戏选择区域 */
+.game-section {
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.title-text {
+  display: block;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 10rpx;
+}
+
+.subtitle-text {
+  display: block;
+  font-size: 26rpx;
+  color: #666666;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+}
+
+.game-button {
+  width: 100%;
+  height: 120rpx;
+  border: none;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-button:active {
+  transform: scale(0.98);
+}
+
+.game-button.fill-blank {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+}
+
+.game-button.place-match {
+  background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+}
+
+.game-button.dialog-fill {
+  background: linear-gradient(135deg, #A8E6CF 0%, #7FCDCD 100%);
+}
+
+.button-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10rpx;
+  color: #ffffff;
+}
+
+.button-icon {
+  font-size: 40rpx;
+}
+
+.button-title {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.button-desc {
+  font-size: 24rpx;
+  opacity: 0.9;
+}
+
+/* 游戏统计 */
+.stats-section {
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.stats-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.stats-grid {
+  display: flex;
+  gap: 20rpx;
+}
+
+.stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10rpx;
+  padding: 20rpx;
+  background: #f8f9fa;
+  border-radius: 16rpx;
+}
+
+.stat-number {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1AAD19;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+/* 分享弹窗 */
+.share-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.share-container {
+  width: 600rpx;
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.share-header {
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.share-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 10rpx;
+}
+
+.share-subtitle {
+  display: block;
+  font-size: 28rpx;
+  color: #666666;
+}
+
+.share-content {
+  margin-bottom: 40rpx;
+}
+
+.share-preview {
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  text-align: center;
+}
+
+.preview-text {
+  font-size: 28rpx;
+  color: #333333;
+  line-height: 1.6;
+}
+
+.share-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.share-action-btn {
+  flex: 1;
+  height: 80rpx;
+  border: none;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+  transition: all 0.3s;
+}
+
+.share-action-btn.primary {
+  background: #1AAD19;
+  color: #ffffff;
+}
+
+.share-action-btn.secondary {
+  background: #f0f0f0;
+  color: #666666;
+}
+
+.share-action-btn:active {
+  transform: scale(0.95);
+}

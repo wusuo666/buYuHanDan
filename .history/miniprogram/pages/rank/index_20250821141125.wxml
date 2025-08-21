@@ -33,15 +33,22 @@
           <text class="stat-item">得分: {{myRankInfo.score || 0}}</text>
           <text class="stat-item">关卡: {{myRankInfo.level || 0}}</text>
         </view>
+        <view class="my-progress" wx:if="{{userStats}}">
+          <text class="progress-text">已解锁 {{(userStats.unlockedSpots || []).length}}/{{userStats.totalSpots || 0}} 个景点</text>
+        </view>
       </view>
     </view>
     <view class="action-buttons">
-      <button class="share-btn" bindtap="generatePoster">
-        <text class="iconfont icon-poster">📷</text>
+      <button class="share-btn poster-btn" bindtap="generatePoster">
+        <text class="iconfont">📷</text>
         生成海报
       </button>
+      <button class="share-btn invite-btn" bindtap="showInviteModal">
+        <text class="iconfont">👥</text>
+        邀请好友
+      </button>
       <button class="share-btn" open-type="share">
-        <text class="iconfont icon-share">📤</text>
+        <text class="iconfont">📤</text>
         分享好友
       </button>
     </view>
@@ -83,7 +90,7 @@
         <view class="user-progress">
           <text class="progress-item">{{item.score || 0}}分</text>
           <text class="progress-item">第{{item.level || 0}}关</text>
-          <text class="progress-item" wx:if="{{item.unlockedSpots}}">{{item.unlockedSpots.length}}个景点</text>
+          <text class="progress-item" wx:if="{{item.unlockedSpots}}">{{(item.unlockedSpots || []).length}}个景点</text>
         </view>
       </view>
       
@@ -106,7 +113,7 @@
     
     <!-- 空状态 -->
     <view class="empty-state" wx:if="{{!loading && rankList.length === 0}}">
-      <view class="empty-icon">📊</view>
+      <image class="empty-icon" src="/images/avatar.png" mode="aspectFit" />
       <text class="empty-text">暂无排行数据</text>
       <text class="empty-sub">快去游戏中创造你的记录吧！</text>
       <navigator url="/pages/game/index" open-type="switchTab">
@@ -114,6 +121,37 @@
       </navigator>
     </view>
   </scroll-view>
+
+  <!-- 邀请弹窗 -->
+  <view class="invite-modal" wx:if="{{showInviteModal}}" bindtap="closeInviteModal">
+    <view class="invite-container" catchtap="doNothing">
+      <view class="invite-header">
+        <text class="invite-title">邀请好友</text>
+        <text class="invite-subtitle">一起解锁邯郸成语故事</text>
+      </view>
+      <view class="invite-content">
+        <text class="invite-message">{{inviteMessage}}</text>
+        <view class="invite-features">
+          <view class="feature-item">
+            <text class="feature-icon">🎯</text>
+            <text class="feature-text">挑战成语关卡</text>
+          </view>
+          <view class="feature-item">
+            <text class="feature-icon">🗺️</text>
+            <text class="feature-text">探索邯郸景点</text>
+          </view>
+          <view class="feature-item">
+            <text class="feature-icon">🏆</text>
+            <text class="feature-text">比拼排行榜</text>
+          </view>
+        </view>
+      </view>
+      <view class="invite-actions">
+        <button class="invite-btn primary" bindtap="sendInvitation">发送邀请</button>
+        <button class="invite-btn secondary" bindtap="closeInviteModal">取消</button>
+      </view>
+    </view>
+  </view>
 
   <!-- 海报弹窗 -->
   <view class="poster-modal" wx:if="{{showPoster}}" bindtap="closePoster">

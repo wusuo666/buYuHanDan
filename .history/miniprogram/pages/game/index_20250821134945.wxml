@@ -1,0 +1,108 @@
+<view class="section">
+  <!-- 小游戏模块占位：
+    1. 选词填空关卡
+    2. 地点匹配关卡
+    3. 人物对话填空关卡
+    以上关卡统一使用 idiom 集合作为题源，通关数写入 users.level
+  -->
+  <view class="muted">快来玩小游戏吧！！！</view>
+</view> 
+
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card" wx:if="{{hasUserInfo}}">
+    <view class="user-info">
+      <image class="user-avatar" src="{{userInfo.avatar}}" mode="aspectFill" />
+      <view class="user-details">
+        <text class="user-nickname">{{userInfo.nickName}}</text>
+        <view class="progress-info">
+          <text class="progress-text">已通过 {{passedLevels}}/{{totalLevels}} 关</text>
+        </view>
+      </view>
+    </view>
+    <view class="share-section">
+      <button class="share-btn" open-type="share">
+        <text class="share-icon">📤</text>
+        <text>分享进度</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 未授权提示 -->
+  <view class="auth-tip" wx:if="{{!hasUserInfo}}">
+    <text class="tip-text">授权后可记录游戏进度</text>
+    <button class="auth-btn" bindtap="getUserProfile">立即授权</button>
+  </view>
+
+  <!-- 游戏选择区域 -->
+  <view class="game-section">
+    <view class="section-title">
+      <text class="title-text">选择游戏模式</text>
+      <text class="subtitle-text">挑战不同难度的成语关卡</text>
+    </view>
+    
+    <view class="button-group">
+      <button class="game-button fill-blank" bindtap="startLevelFillBlank">
+        <view class="button-content">
+          <text class="button-icon">✏️</text>
+          <text class="button-title">成语填空</text>
+          <text class="button-desc">根据提示填写成语</text>
+        </view>
+      </button>
+      
+      <button class="game-button place-match" bindtap="startLevelPlaceMatch">
+        <view class="button-content">
+          <text class="button-icon">🗺️</text>
+          <text class="button-title">地点匹配</text>
+          <text class="button-desc">匹配成语与景点</text>
+        </view>
+      </button>
+      
+      <button class="game-button dialog-fill" bindtap="startLevelDialogFill">
+        <view class="button-content">
+          <text class="button-icon">💬</text>
+          <text class="button-title">对话填空</text>
+          <text class="button-desc">完成成语对话</text>
+        </view>
+      </button>
+    </view>
+  </view>
+
+  <!-- 游戏统计 -->
+  <view class="stats-section" wx:if="{{hasUserInfo}}">
+    <view class="stats-title">游戏统计</view>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-number">{{passedLevels}}</text>
+        <text class="stat-label">已通关</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{totalLevels - passedLevels}}</text>
+        <text class="stat-label">待挑战</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{totalLevels > 0 ? Math.round(passedLevels / totalLevels * 100) : 0}}%</text>
+        <text class="stat-label">完成率</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分享弹窗 -->
+  <view class="share-modal" wx:if="{{showShareModal}}" bindtap="closeShareModal">
+    <view class="share-container" catchtap="doNothing">
+      <view class="share-header">
+        <text class="share-title">分享游戏进度</text>
+        <text class="share-subtitle">邀请好友一起挑战成语关卡</text>
+      </view>
+      <view class="share-content">
+        <view class="share-preview">
+          <text class="preview-text">我在邯郸成语导览中已通过{{passedLevels}}关，快来一起挑战吧！</text>
+        </view>
+      </view>
+      <view class="share-actions">
+        <button class="share-action-btn primary" open-type="share">分享给好友</button>
+        <button class="share-action-btn secondary" bindtap="closeShareModal">取消</button>
+      </view>
+    </view>
+  </view>
+</view>

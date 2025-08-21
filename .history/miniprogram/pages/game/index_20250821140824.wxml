@@ -1,0 +1,17 @@
+<view class="section">
+  <!-- 小游戏模块占位：
+    1. 选词填空关卡
+    2. 地点匹配关卡
+    3. 人物对话填空关卡
+    以上关卡统一使用 idiom 集合作为题源，通关数写入 users.level
+  -->
+  <view class="muted">快来玩小游戏吧！！！</view>
+</view> 
+
+<view class="container">
+  <view class="button-group">
+    <button class="game-button" bindtap="startLevelFillBlank">成语填空</button>
+    <button class="game-button" bindtap="startLevelPlaceMatch">地点匹配</button>
+    <button class="game-button" bindtap="startLevelDialogFill">对话填空</button>
+  </view>
+</view>

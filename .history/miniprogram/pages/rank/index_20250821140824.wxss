@@ -6,47 +6,6 @@
   background-color: #f0f4f7;
 }
 
-/* 空状态样式 */
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 100rpx 40rpx;
-  text-align: center;
-}
-
-.empty-icon {
-  font-size: 120rpx;
-  margin-bottom: 30rpx;
-  color: #cccccc;
-}
-
-.empty-text {
-  font-size: 36rpx;
-  color: #666666;
-  margin-bottom: 20rpx;
-  font-weight: bold;
-}
-
-.empty-sub {
-  font-size: 28rpx;
-  color: #999999;
-  margin-bottom: 40rpx;
-  line-height: 1.5;
-}
-
-.go-game-btn {
-  background: linear-gradient(135deg, #1AAD19 0%, #2ECC71 100%);
-  color: #ffffff;
-  border: none;
-  border-radius: 50rpx;
-  padding: 20rpx 60rpx;
-  font-size: 32rpx;
-  font-weight: bold;
-  box-shadow: 0 8rpx 20rpx rgba(26, 173, 25, 0.3);
-}
-
 /* 标签切换 */
 .tab-bar {
   display: flex;

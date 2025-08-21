@@ -23,7 +23,7 @@
     <view class="my-rank-content">
       <image 
         class="my-avatar" 
-        src="{{myRankInfo.avatar || '/images/avatar.png'}}"
+        src="{{myRankInfo.avatar || '/images/default-avatar.png'}}"
         mode="aspectFill"
       />
       <view class="my-info">
@@ -70,7 +70,7 @@
       <!-- 用户头像 -->
       <image 
         class="user-avatar" 
-        src="{{item.avatar || '/images/avatar.png'}}"
+        src="{{item.avatar || '/images/default-avatar.png'}}"
         mode="aspectFill"
       />
       
@@ -106,7 +106,7 @@
     
     <!-- 空状态 -->
     <view class="empty-state" wx:if="{{!loading && rankList.length === 0}}">
-      <view class="empty-icon">📊</view>
+      <image class="empty-icon" src="/images/empty.png" mode="aspectFit" />
       <text class="empty-text">暂无排行数据</text>
       <text class="empty-sub">快去游戏中创造你的记录吧！</text>
       <navigator url="/pages/game/index" open-type="switchTab">
