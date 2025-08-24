@@ -18,7 +18,7 @@ Page({
         name: 'game',
         data: {
           action: 'getGameData',
-          count: 2 // 暂时获取2个，后续可改为4个
+          count: 4 
         },
       });
 

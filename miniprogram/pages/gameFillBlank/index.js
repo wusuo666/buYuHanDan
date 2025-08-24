@@ -1,5 +1,4 @@
 // pages/gameFillBlank/index.js
-// pages/gameFillBlank/index.js
 Page({
   data: {
     idiomData: null, // 存储从云端获取的完整成语对象
@@ -90,7 +89,7 @@ Page({
       idiomData,
       hiddenIndex
     } = this.data;
-    if (!userInput) {
+    if (!userInput.trim()) {
       wx.showToast({
         title: '请输入答案',
         icon: 'none'

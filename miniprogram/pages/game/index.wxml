@@ -1,17 +1,32 @@
-<view class="section">
-  <!-- 小游戏模块占位：
-    1. 选词填空关卡
-    2. 地点匹配关卡
-    3. 人物对话填空关卡
-    以上关卡统一使用 idiom 集合作为题源，通关数写入 users.level
-  -->
-  <view class="muted">快来玩小游戏吧！！！</view>
-</view> 
-
 <view class="container">
-  <view class="button-group">
-    <button class="game-button" bindtap="startLevelFillBlank">成语填空</button>
-    <button class="game-button" bindtap="startLevelPlaceMatch">地点匹配</button>
-    <button class="game-button" bindtap="startLevelDialogFill">对话填空</button>
+  <view class="title-container">
+    <text class="main-title">步语赵都</text>
+    <text class="subtitle">中华成语智慧之旅</text>
+  </view>
+
+  <view class="card-container">
+    <!-- Card 1: 成语填空 -->
+    <view class="card card-1" bindtap="startLevelFillBlank">
+      <view class="card-content">
+        <text class="card-title">成语填空</text>
+        <text class="card-description">根据残缺的成语，填入正确的汉字</text>
+      </view>
+    </view>
+
+    <!-- Card 2: 地点匹配 -->
+    <view class="card card-2" bindtap="startLevelPlaceMatch">
+      <view class="card-content">
+        <text class="card-title">地点匹配</text>
+        <text class="card-description">将成语与其发源地正确地连接起来</text>
+      </view>
+    </view>
+
+    <!-- Card 3: 对话填空 -->
+    <view class="card card-3" bindtap="startLevelDialogFill">
+      <view class="card-content">
+        <text class="card-title">闻事猜词</text>
+        <text class="card-description">阅读成语故事，猜出对应的成语</text>
+      </view>
+    </view>
   </view>
 </view>
