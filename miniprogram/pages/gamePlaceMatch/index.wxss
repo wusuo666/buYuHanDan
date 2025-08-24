@@ -3,62 +3,94 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20rpx;
+  padding: 20px;
+  background: #f8f4e6; /* Ivory white background */
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.title-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #3a574a; /* Indigo color */
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #8c9c7c; /* Bean green */
+  margin-top: 5px;
 }
 
 .game-area {
   display: flex;
   width: 100%;
-  justify-content: space-around;
-  margin-bottom: 40rpx;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.idiom-list,
-.location-list {
+.list-container {
+  width: 48%;
   display: flex;
   flex-direction: column;
-  width: 45%;
+  align-items: center;
 }
 
-.idiom-item,
-.location-item {
-  background-color: #f0f0f0;
-  padding: 20rpx;
-  margin-bottom: 10rpx;
-  border-radius: 8rpx;
+.list-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #3a574a;
+  margin-bottom: 10px;
+}
+
+.item-list {
+  width: 100%;
+}
+
+.item-card {
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
   text-align: center;
-  font-size: 32rpx;
+  font-size: 18px;
   color: #333;
-  border: 2rpx solid #ccc;
+  border: 1px solid #d3b17d; /* Camel color border */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
 }
 
-.idiom-item.selected,
-.location-item.selected {
-  border-color: #007bff;
-  background-color: #e0f0ff;
-  color: #007bff;
+.item-card.selected {
+  border-color: #b35c44; /* Ochre */
+  background-color: #fdf2e9;
+  color: #b35c44;
+  transform: translateY(-2px);
 }
 
-.idiom-item.matched,
-.location-item.matched {
-  background-color: #d4edda;
-  border-color: #28a745;
-  color: #28a745;
+.item-card.matched {
+  background-color: #e8f5e9;
+  border-color: #56ab2f;
+  color: #56ab2f;
   opacity: 0.7;
 }
 
 .score-area {
-  margin-top: 20rpx;
-  font-size: 36rpx;
+  margin-top: 10px;
+  font-size: 20px;
   font-weight: bold;
-  color: #555;
+  color: #3a574a;
 }
 
 .reset-button {
-  margin-top: 40rpx;
-  padding: 15rpx 30rpx;
-  background-color: #007bff;
+  margin-top: 20px;
+  padding: 10px 25px;
+  background-color: #8c9c7c; /* Bean green */
   color: white;
-  border-radius: 8rpx;
-  font-size: 32rpx;
+  border-radius: 20px;
+  font-size: 16px;
+  border: none;
 }

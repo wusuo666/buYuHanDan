@@ -13,6 +13,78 @@ exports.main = async (event, context) => {
   } = event;
 
   switch (action) {
+    case 'getStoryIdiom':     //获取成语故事云函数，对应成语故事匹配游戏
+      try {
+        const randomResult = await db.collection('idiom').aggregate()
+          .match({
+            story: db.command.neq(null) // 确保story字段存在且不为null
+          })
+          .sample({
+            size: 1
+          })
+          .project({
+            story: 1,
+            _id: 1, // 返回_id用于后续校验
+          })
+          .end();
+
+        if (randomResult.list && randomResult.list.length > 0) {
+          return {
+            success: true,
+            data: randomResult.list[0]
+          };
+        } else {
+          return {
+            success: false,
+            message: '未能从数据库中获取成语故事'
+          };
+        }
+      } catch (e) {
+        console.error('getStoryIdiom error:', e);
+        return {
+          success: false,
+          message: '查询数据库时发生错误'
+        };
+      }
+    case 'checkIdiom': // 校验成语答案
+      try {
+        const {
+          idiomId,
+          userAnswer
+        } = event;
+        if (!idiomId || !userAnswer) {
+          return {
+            success: false,
+            message: '缺少参数'
+          };
+        }
+
+        const result = await db.collection('idiom').doc(idiomId).get();
+
+        if (result.data) {
+          const correct = result.data.idiom === userAnswer;
+          return {
+            success: true,
+            correct: correct,
+            answer: {
+              idiom: result.data.idiom,
+              pinyin: result.data.pinyin,
+              explanation: result.data.explanation
+            }
+          };
+        } else {
+          return {
+            success: false,
+            message: '找不到对应的成语'
+          };
+        }
+      } catch (e) {
+        console.error('checkIdiom error:', e);
+        return {
+          success: false,
+          message: '校验答案时发生错误'
+        };
+      }
     case 'getRandomIdiom':   //获取随机成语云函数，对应成语填空游戏
       try {
         // 优化：使用 projection 只返回必需的 idiom 字段和 _id

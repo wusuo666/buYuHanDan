@@ -112,17 +112,11 @@
     
     <!-- 空状态 - 只在没有数据时显示 -->
     <view class="empty-state" wx:if="{{!loading && rankList.length === 0}}">
-<<<<<<< HEAD
       <view class="empty-icon">📊</view>
-=======
-<<<<<<< Updated upstream
       <image class="empty-icon" src="/images/empty.png" mode="aspectFit" />
->>>>>>> lxy
       <text class="empty-text">暂无排行数据</text>
-=======
       <view class="empty-icon">📊</view>
       <text class="empty-text">暂无更多排行数据</text>
->>>>>>> Stashed changes
       <text class="empty-sub">快去游戏中创造你的记录吧！</text>
       <navigator url="/pages/game/index" open-type="switchTab">
         <button class="go-game-btn">开始游戏</button>

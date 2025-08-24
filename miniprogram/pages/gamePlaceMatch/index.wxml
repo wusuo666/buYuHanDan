@@ -1,28 +1,39 @@
 <view class="container">
+  <view class="title-container">
+    <text class="title">成语寻踪</text>
+    <text class="subtitle">将成语与其发源地正确连接</text>
+  </view>
+
   <view class="game-area">
     <!-- 成语列表 -->
-    <view class="idiom-list">
-      <view
-        wx:for="{{idioms}}"
-        wx:key="{{item.id}}"
-        data-id="{{item.id}}"
-        class="idiom-item {{item.matched ? 'matched' : ''}} {{selectedIdiom === item.id ? 'selected' : ''}}"
-        bindtap="selectIdiom"
-      >
-        {{item.idiom}}
+    <view class="list-container">
+      <view class="list-title">成语</view>
+      <view class="item-list">
+        <view
+          wx:for="{{idioms}}"
+          wx:key="{{item.id}}"
+          data-id="{{item.id}}"
+          class="item-card idiom-card {{item.matched ? 'matched' : ''}} {{selectedIdiom === item.id ? 'selected' : ''}}"
+          bindtap="selectIdiom"
+        >
+          {{item.idiom}}
+        </view>
       </view>
     </view>
 
     <!-- 地点列表 -->
-    <view class="location-list">
-      <view
-        wx:for="{{locations}}"
-        wx:key="{{item.id}}"
-        data-id="{{item.id}}"
-        class="location-item {{item.matched ? 'matched' : ''}} {{selectedLocation === item.id ? 'selected' : ''}}"
-        bindtap="selectLocation"
-      >
-        {{item.location}}
+    <view class="list-container">
+      <view class="list-title">地点</view>
+      <view class="item-list">
+        <view
+          wx:for="{{locations}}"
+          wx:key="{{item.id}}"
+          data-id="{{item.id}}"
+          class="item-card location-card {{item.matched ? 'matched' : ''}} {{selectedLocation === item.id ? 'selected' : ''}}"
+          bindtap="selectLocation"
+        >
+          {{item.location}}
+        </view>
       </view>
     </view>
   </view>

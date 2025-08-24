@@ -10,17 +10,106 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40rpx;
+  min-height: 100vh;
+  background: #f8f4e6; /* Ivory white background */
+  padding: 20px;
   box-sizing: border-box;
-  height: 100vh;
-  background-color: #f0f4f7;
 }
 
-.title {
-  font-size: 56rpx;
+.title-container {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.main-title {
+  font-size: 36px;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 80rpx;
+  color: #3a574a; /* Indigo color */
+  letter-spacing: 4px;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #8c9c7c; /* Bean green */
+  margin-top: 10px;
+}
+
+.card-container {
+  width: 100%;
+}
+
+.card {
+  width: 100%;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid #d3b17d; /* Camel color border */
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+
+.card:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-content {
+  text-align: left;
+  width: 100%; /* Ensure content area takes full width */
+}
+
+.card-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #b35c44 !important; /* Forcing Ochre color */
+  background-color: white;   /* Adding yellow background for debugging */
+  display: block;             /* Ensure it's rendered as a block */
+}
+
+.card-description {
+  font-size: 14px;
+  color: #7a7a7a !important; /* Forcing gray color */
+  background-color: white;     /* Adding cyan background for debugging */
+  display: block;               /* Ensure it's rendered as a block */
+}
+
+/* Unique styles for each card */
+.card-1 {
+  border-left: 5px solid #b35c44; /* Ochre */
+}
+
+.card-2 {
+  border-left: 5px solid #3a574a; /* Indigo */
+}
+
+.card-3 {
+  border-left: 5px solid #8c9c7c; /* Bean green */
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.card-description {
+  font-size: 14px;
+  color: #f8f8f8;
+  margin-top: 5px;
+}
+
+.card-arrow {
+  font-size: 24px;
+  color: #fff;
+  font-weight: bold;
 }
 
 .button-group {

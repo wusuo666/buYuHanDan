@@ -1,4 +1,27 @@
-<view class="section">
-  <!-- 对话填空占位：从 story 字段句子生成对话气泡，供填空 -->
-  <view class="muted">对话填空（待开发）</view>
-</view> 
+<view class="container">
+  <view class="title-container">
+    <text class="title">成语猜测</text>
+    <text class="subtitle">根据故事猜成语</text>
+  </view>
+
+  <view class="story-container">
+    <text class="story-content">{{story}}</text>
+  </view>
+
+  <view class="input-container">
+    <input class="input" placeholder="请输入你猜测的成语" bindinput="onInput" value="{{inputValue}}"></input>
+    <button class="submit-button" bindtap="submitAnswer">提交</button>
+  </view>
+
+  <button class="next-button" bindtap="getNext">下一个</button>
+
+  <view class="modal" wx:if="{{showModal}}">
+    <view class="modal-content">
+      <text class="modal-title">{{modalTitle}}</text>
+      <view wx:if="{{!isCorrect}}">
+        <text>正确答案：{{answer.idiom}}</text>
+      </view>
+      <button class="modal-button" bindtap="closeModal">关闭</button>
+    </view>
+  </view>
+</view>

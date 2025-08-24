@@ -1,18 +1,18 @@
-<view class="section">
-  <!-- 选词填空占位：从 idioms 提取关键句子生成填空 -->
-  <view class="muted">成语填空游戏</view>
-</view> 
-
 <view class="container">
+  <view class="title-container">
+    <text class="title">成语填空</text>
+    <text class="subtitle">猜猜看，这里缺了哪个字？</text>
+  </view>
+
   <view class="idiom-container">
     <block wx:for="{{displayIdiom}}" wx:key="index">
-      <view class="char-box">{{item.char}}</view>
+      <view class="char-box {{item.char === ' ' ? 'empty' : ''}}">{{item.char}}</view>
     </block>
   </view>
 
   <view class="input-section">
-    <input class="input-box" placeholder="请填入空缺的字" bindinput="onInput" value="{{userInput}}" maxlength="1" />
-    <button class="submit-button" bindtap="checkAnswer" disabled="{{showResult}}">提交答案</button>
+    <input class="input-box" placeholder="请填入空缺的字" bindinput="onInput" value="{{userInput}}" maxlength="1" disabled="{{showResult}}" />
+    <button class="submit-button" bindtap="checkAnswer" disabled="{{showResult}}">提交</button>
   </view>
 
   <view wx:if="{{showResult}}" class="result-section">
