@@ -49,12 +49,15 @@
 
 .item-list {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
 }
 
 .item-card {
   background-color: #fff;
   padding: 15px;
-  margin-bottom: 10px;
   border-radius: 8px;
   text-align: center;
   font-size: 18px;

@@ -36,6 +36,7 @@
   justify-content: center;
   margin-top: 20px;
   margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 .char-box {

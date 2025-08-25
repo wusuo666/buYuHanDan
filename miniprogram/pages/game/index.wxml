@@ -16,7 +16,7 @@
     <!-- Card 2: 地点匹配 -->
     <view class="card card-2" bindtap="startLevelPlaceMatch">
       <view class="card-content">
-        <text class="card-title">地点匹配</text>
+        <text class="card-title">成语寻踪</text>
         <text class="card-description">将成语与其发源地正确地连接起来</text>
       </view>
     </view>

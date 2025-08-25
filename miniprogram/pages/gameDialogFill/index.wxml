@@ -1,6 +1,6 @@
 <view class="container">
   <view class="title-container">
-    <text class="title">成语猜测</text>
+    <text class="title">闻事猜词</text>
     <text class="subtitle">根据故事猜成语</text>
   </view>
 
