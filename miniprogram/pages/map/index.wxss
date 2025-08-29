@@ -1,4 +1,3 @@
-/* 地图容器 */
 .map-container {
   width: 100%;
   height: 100vh;
@@ -10,7 +9,6 @@
   height: 100%;
 }
 
-/* 控件样式 */
 .controls-container {
   position: absolute;
   top: 20rpx;
@@ -41,7 +39,6 @@
   color: #333;
 }
 
-/* 弹窗样式 */
 .popup-mask {
   position: fixed;
   top: 0;
@@ -55,12 +52,24 @@
   z-index: 1000;
 }
 
-.popup-content {
+.popup-swiper-container {
   width: 85%;
-  max-height: 70vh;
-  background: #fff;
-  border-radius: 20rpx;
+  height: 80vh;
+  border-radius: 24rpx;
   overflow: hidden;
+}
+
+.idiom-swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.popup-content {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
 }
 
 .popup-header {
@@ -70,70 +79,227 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .idiom-title {
   font-size: 36rpx;
   font-weight: bold;
+  flex: 1;
+  margin-right: 20rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .close-btn {
   font-size: 40rpx;
   font-weight: bold;
   padding: 10rpx 20rpx;
+  flex-shrink: 0;
 }
 
-.popup-body {
-  padding: 30rpx;
-  max-height: 50vh;
+.header-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 20rpx;
+  flex-shrink: 0;
 }
 
-.info-item {
-  margin-bottom: 24rpx;
-  line-height: 1.6;
-}
-
-.label {
-  font-weight: bold;
-  color: #333;
-  margin-right: 12rpx;
-  display: block;
+.indicator-text {
+  color: white;
+  font-size: 24rpx;
   margin-bottom: 8rpx;
 }
 
-.value {
-  color: #666;
-  display: block;
+.indicator-dots {
+  display: flex;
+  gap: 8rpx;
+}
+
+.dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.dot.active {
+  background: white;
+}
+
+.image-carousel {
+  height: 280rpx;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.image-swiper {
+  height: 100%;
+  width: 100%;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+}
+
+.image-indicator {
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+.popup-body {
+  flex: 1;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  height: calc(80vh - 480rpx); /* 动态计算高度 */
+}
+
+.info-section {
+  margin-bottom: 30rpx;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+  flex-shrink: 0;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.characters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.character-tag {
+  background: #f0f5ff;
+  color: #4e54c8;
+  padding: 12rpx 24rpx;
+  border-radius: 20rpx;
+  font-size: 26rpx;
+  border: 1rpx solid #d6e4ff;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .segments-container {
-  margin-top: 10rpx;
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  padding: 20rpx;
 }
 
 .segment-item {
+  display: flex;
+  margin-bottom: 16rpx;
+  line-height: 1.6;
+}
+
+.segment-item:last-child {
+  margin-bottom: 0;
+}
+
+.segment-number {
+  color: #4e54c8;
+  font-weight: bold;
+  margin-right: 12rpx;
+  flex-shrink: 0;
+}
+
+.segment-text {
+  color: #666;
+  flex: 1;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.story-text {
+  color: #666;
+  line-height: 1.8;
+  font-size: 28rpx;
+  text-align: justify;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: normal; /* 确保文本可以正常换行 */
+}
+
+.location-info {
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.location-name {
+  display: block;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.location-address {
   display: block;
   color: #666;
-  margin-bottom: 6rpx;
-  font-size: 28rpx;
+  font-size: 26rpx;
+  line-height: 1.5;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
-.images-container {
-  margin-top: 30rpx;
+.bottom-padding {
+  height: 40rpx;
 }
 
-.images-scroll {
-  white-space: nowrap;
-  margin-top: 15rpx;
+.swipe-hint {
+  position: absolute;
+  bottom: 20rpx;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  animation: swipeHint 2s infinite;
 }
 
-.idiom-image {
-  width: 200rpx;
-  height: 150rpx;
-  border-radius: 12rpx;
-  margin-right: 20rpx;
+.hint-text {
+  background: rgba(78, 84, 200, 0.9);
+  color: white;
+  padding: 16rpx 32rpx;
+  border-radius: 30rpx;
+  font-size: 26rpx;
 }
 
-/* 加载提示 */
+@keyframes swipeHint {
+  0%, 100% { opacity: 0.7; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(10rpx); }
+}
+
 .loading-container {
   position: absolute;
   top: 50%;
@@ -149,7 +315,3 @@
   font-size: 32rpx;
 }
 
-/* 阻止事件冒泡 */
-.stop-propagation {
-  pointer-events: auto;
-}

@@ -3,126 +3,201 @@ const db = wx.cloud.database();
 
 Page({
   data: {
-    // 地图中心点 - 邯郸市坐标
     latitude: 36.6255,
     longitude: 114.4907,
     scale: 12,
-    
-    // 标记点数组
     markers: [],
-    
-    // 弹窗控制
     showPopup: false,
-    currentIdiom: null,
-    
-    // 加载状态
-    isLoading: true
+    currentIdioms: [],
+    currentIdiomIndex: 0,
+    showSwipeHint: true,
+    isLoading: true,
+    currentImageIndex: 0,
+    // 新增滑动控制变量
+    scrollTop: 0,
+    isScrolling: false,
+    startX: 0,
+    startY: 0,
+    // 新增：记录滑动方向
+    scrollDirection: null
   },
 
   onLoad: function() {
     this.loadAllIdiomMarkers();
+    setTimeout(() => {
+      this.setData({ showSwipeHint: false });
+    }, 3000);
   },
 
-  // 新增：解析坐标字符串函数
- // 修改 parseCoordinates 函数
-parseCoordinates: function(geopoint) {
-  console.log('原始坐标数据:', geopoint);
-  
-  try {
-    // 方法1：直接访问属性（GEO_POINT类型）
-    if (geopoint && typeof geopoint.longitude === 'number' && typeof geopoint.latitude === 'number') {
-      return [geopoint.longitude, geopoint.latitude];
+  // 滑动事件处理 - 解决滑动冲突
+  onSwiperTouchStart: function(e) {
+    this.setData({
+      startX: e.touches[0].clientX,
+      startY: e.touches[0].clientY,
+      isScrolling: false,
+      scrollDirection: null
+    });
+  },
+
+  onSwiperTouchMove: function(e) {
+    if (this.data.isScrolling) return;
+    
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    const diffX = Math.abs(currentX - this.data.startX);
+    const diffY = Math.abs(currentY - this.data.startY);
+    
+    // 调整判断阈值，更准确地区分水平和垂直滑动
+    if (diffX > diffY && diffX > 10) {
+      // 主要是水平滑动，让swiper处理
+      this.setData({ 
+        isScrolling: false,
+        scrollDirection: 'horizontal'
+      });
+    } else if (diffY > diffX && diffY > 5) {
+      // 主要是垂直滑动，标记为滚动状态
+      this.setData({ 
+        isScrolling: true,
+        scrollDirection: 'vertical'
+      });
     }
-    // 方法2：使用getter方法
-    else if (geopoint && typeof geopoint.longitude === 'function') {
-      return [geopoint.longitude(), geopoint.latitude()];
+  },
+
+  onSwiperTouchEnd: function(e) {
+    this.setData({ 
+      isScrolling: false,
+      scrollDirection: null
+    });
+  },
+
+  onScrollTouchStart: function(e) {
+    this.setData({
+      startX: e.touches[0].clientX,
+      startY: e.touches[0].clientY,
+      scrollDirection: null
+    });
+  },
+
+  onScrollTouchMove: function(e) {
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    const diffX = Math.abs(currentX - this.data.startX);
+    const diffY = Math.abs(currentY - this.data.startY);
+    
+    // 如果已经确定为水平滑动，则阻止滚动
+    if (this.data.scrollDirection === 'horizontal') {
+      return;
     }
-    // 方法3：处理字符串数组格式
-    else if (Array.isArray(geopoint) && geopoint.length >= 2) {
-      if (typeof geopoint[0] === 'string') {
-        const lonStr = geopoint[0].replace('° E', '').replace('°', '').trim();
-        const latStr = geopoint[1].replace('° N', '').replace('°', '').trim();
-        return [parseFloat(lonStr), parseFloat(latStr)];
-      } else {
-        return [geopoint[0], geopoint[1]];
+    
+    // 判断滑动方向
+    if (!this.data.scrollDirection) {
+      if (diffX > diffY && diffX > 10) {
+        this.setData({ scrollDirection: 'horizontal' });
+        return; // 水平滑动，阻止滚动
+      } else if (diffY > diffX && diffY > 5) {
+        this.setData({ scrollDirection: 'vertical' });
+        // 垂直滑动，允许滚动
       }
     }
-  } catch (error) {
-    console.warn('坐标解析错误:', error);
-  }
-  
-  console.warn('无法解析的坐标格式，使用默认值');
-  return [114.4907, 36.6255];
-},
+  },
 
-  // 从数据库加载所有成语标记点
+  onScrollTouchEnd: function(e) {
+    this.setData({ scrollDirection: null });
+  },
+
+  onScroll: function(e) {
+    this.setData({ scrollTop: e.detail.scrollTop });
+  },
+
+  parseCoordinates: function(geopoint) {
+    console.log('原始坐标数据:', geopoint);
+    try {
+      if (geopoint && typeof geopoint.longitude === 'number' && typeof geopoint.latitude === 'number') {
+        return [
+          parseFloat(geopoint.longitude.toFixed(6)),
+          parseFloat(geopoint.latitude.toFixed(6))
+        ];
+      }
+      else if (geopoint && typeof geopoint.longitude === 'function') {
+        return [
+          parseFloat(geopoint.longitude().toFixed(6)),
+          parseFloat(geopoint.latitude().toFixed(6))
+        ];
+      }
+      else if (Array.isArray(geopoint) && geopoint.length >= 2) {
+        if (typeof geopoint[0] === 'string') {
+          const lonStr = geopoint[0].replace('° E', '').replace('°', '').trim();
+          const latStr = geopoint[1].replace('° N', '').replace('°', '').trim();
+          return [
+            parseFloat(parseFloat(lonStr).toFixed(6)),
+            parseFloat(parseFloat(latStr).toFixed(6))
+          ];
+        } else {
+          return [
+            parseFloat(geopoint[0].toFixed(6)),
+            parseFloat(geopoint[1].toFixed(6))
+          ];
+        }
+      }
+    } catch (error) {
+      console.warn('坐标解析错误:', error);
+    }
+    return [114.4907, 36.6255];
+  },
+
   async loadAllIdiomMarkers() {
     try {
-      wx.showLoading({
-        title: '加载成语地点中...',
-      });
-
+      wx.showLoading({ title: '加载成语地点中...' });
       this.setData({ isLoading: true });
 
-      // 获取数据库中所有包含位置信息的成语
       const res = await db.collection('idiom')
-        .where({
-          location: db.command.exists(true)
-        })
+        .where({ location: db.command.exists(true) })
         .get();
-
-      console.log('从数据库获取到的成语数据:', res.data);
 
       if (res.data.length === 0) {
         wx.hideLoading();
         this.setData({ isLoading: false });
-        wx.showToast({
-          title: '暂无成语地点数据',
-          icon: 'none'
-        });
+        wx.showToast({ title: '暂无成语地点数据', icon: 'none' });
         return;
       }
 
-      // 动态生成标记点 - 已修改
-      const markers = res.data.map((item, index) => {
-        if (!item.location || !item.location.geopoint) {
-          console.warn('成语缺少有效位置信息:', item.idiom || '未知成语');
-          return null;
-        }
-
-        // 使用解析函数处理坐标
+      const locationMap = {};
+      res.data.forEach((item, index) => {
+        if (!item.location || !item.location.geopoint) return;
         const [longitude, latitude] = this.parseCoordinates(item.location.geopoint);
+        const locationKey = `${longitude.toFixed(6)},${latitude.toFixed(6)}`;
+        if (!locationMap[locationKey]) {
+          locationMap[locationKey] = { idioms: [], longitude, latitude };
+        }
+        locationMap[locationKey].idioms.push(item);
+      });
 
+      const markers = Object.values(locationMap).map((location, index) => {
+        const idiomNames = location.idioms.map(item => item.idiom).join('、');
         return {
           id: index,
-          latitude: latitude,
-          longitude: longitude,
+          latitude: location.latitude,
+          longitude: location.longitude,
           iconPath: '/images/map-marker.png',
-          width: 30,
-          height: 30,
-          title: item.idiom || '未命名成语',
+          width: 40,
+          height: 40,
+          title: idiomNames,
           callout: {
-            content: item.idiom || '成语地点',
+            content: idiomNames,
             color: '#000',
             fontSize: 14,
             borderRadius: 4,
             padding: 8,
             display: 'ALWAYS'
-          }
+          },
+          customData: { idioms: location.idioms }
         };
-      }).filter(marker => marker !== null);
-
-      console.log('生成的标记点:', markers);
-
-      this.setData({
-        markers: markers,
-        isLoading: false
       });
 
+      this.setData({ markers: markers, isLoading: false });
       wx.hideLoading();
       
       if (markers.length > 0) {
-        // 自动定位到第一个标记点
         this.setData({
           latitude: markers[0].latitude,
           longitude: markers[0].longitude,
@@ -134,134 +209,97 @@ parseCoordinates: function(geopoint) {
       console.error('加载成语标记点失败:', error);
       wx.hideLoading();
       this.setData({ isLoading: false });
-      wx.showToast({
-        title: '加载数据失败，请重试',
-        icon: 'none'
-      });
+      wx.showToast({ title: '加载数据失败，请重试', icon: 'none' });
     }
   },
 
-  // 点击标记点事件 - 已修改
   async onMarkerTap(e) {
     const markerId = e.markerId;
     const marker = this.data.markers[markerId];
-    
-    if (!marker) return;
+    if (!marker || !marker.customData) return;
 
     try {
-      wx.showLoading({
-        title: '加载详情中...',
+      wx.showLoading({ title: '加载详情中...' });
+      const idiomsToLoad = marker.customData.idioms.slice(0, 5);
+      const formattedIdioms = idiomsToLoad.map(item => this.formatIdiomData(item));
+      
+      this.setData({
+        currentIdioms: formattedIdioms,
+        currentIdiomIndex: 0,
+        currentImageIndex: 0,
+        showPopup: true,
+        showSwipeHint: formattedIdioms.length > 1,
+        scrollTop: 0 // 重置滚动位置
       });
-
-      // 先获取所有数据，然后在客户端过滤（因为坐标格式特殊）
-      const allData = await db.collection('idiom')
-        .where({
-          location: db.command.exists(true)
-        })
-        .get();
-
-      // 在客户端查找匹配的数据
-      const matchedData = allData.data.find(item => {
-        if (!item.location || !item.location.geopoint) return false;
-        
-        const [itemLon, itemLat] = this.parseCoordinates(item.location.geopoint);
-        
-        // 允许一定的精度误差
-        return Math.abs(itemLon - marker.longitude) < 0.001 && 
-               Math.abs(itemLat - marker.latitude) < 0.001;
-      });
-
-      if (matchedData) {
-        this.setData({
-          currentIdiom: this.formatIdiomData(matchedData),
-          showPopup: true
-        });
-      } else {
-        wx.showToast({
-          title: '未找到详情信息',
-          icon: 'none'
-        });
-      }
-
       wx.hideLoading();
     } catch (error) {
       console.error('查询详情失败:', error);
       wx.hideLoading();
-      wx.showToast({
-        title: '加载详情失败',
-        icon: 'none'
-      });
+      wx.showToast({ title: '加载详情失败', icon: 'none' });
     }
   },
 
-  // 格式化成语数据用于显示
   formatIdiomData: function(idiomData) {
     return {
       name: idiomData.idiom || '未知成语',
-      scenicSpot: idiomData.scenicSpot || '暂无景点信息',
-      story: idiomData.story || '暂无故事内容',
-      location: this.formatLocation(idiomData.location),
-      address: idiomData.location?.address || '无地址信息',
+      scenicSpot: idiomData.scenicSpot || '',
+      story: idiomData.story || '',
+      location: idiomData.location,
+      address: idiomData.location?.address || '',
       relatedCharacters: idiomData.relatedCharacters || [],
       storySegments: idiomData.storySegments || [],
       images: this.getImageUrls(idiomData.imgUrl)
     };
   },
 
-  // 格式化位置信息 - 已修改
-  formatLocation: function(location) {
-    if (!location || !location.geopoint) return '位置信息暂无';
-    
-    const [longitude, latitude] = this.parseCoordinates(location.geopoint);
-    
-    return `${location.address || '未知地点'} (纬度: ${latitude.toFixed(6)}, 经度: ${longitude.toFixed(6)})`;
-  },
-
-  // 获取图片URL数组
   getImageUrls: function(imgUrlData) {
     if (!imgUrlData) return [];
-    
-    // 如果是数组格式
     if (Array.isArray(imgUrlData)) {
       return imgUrlData.map(item => {
         if (item && item.fileID) return item.fileID;
         return null;
       }).filter(url => url !== null);
     }
-    
     return [];
   },
 
-  // 定位到邯郸
   moveToHandan() {
-    this.setData({
-      latitude: 36.6255,
-      longitude: 114.4907,
-      scale: 12
-    });
+    this.setData({ latitude: 36.6255, longitude: 114.4907, scale: 12 });
   },
 
-  // 关闭弹窗
   closePopup() {
-    this.setData({
-      showPopup: false,
-      currentIdiom: null
+    this.setData({ 
+      showPopup: false, 
+      currentIdioms: [], 
+      currentIdiomIndex: 0, 
+      currentImageIndex: 0,
+      scrollTop: 0,
+      scrollDirection: null
     });
   },
 
-  // 阻止事件冒泡
   stopPropagation() {
     return false;
   },
 
-  // 预览图片
   previewImage: function(e) {
     const url = e.currentTarget.dataset.url;
-    const allUrls = this.data.currentIdiom.images;
-    
-    wx.previewImage({
-      current: url,
-      urls: allUrls
+    const currentIdiom = this.data.currentIdioms[this.data.currentIdiomIndex];
+    const allUrls = currentIdiom.images;
+    wx.previewImage({ current: url, urls: allUrls });
+  },
+
+  onSwiperChange: function(e) {
+    this.setData({ 
+      currentIdiomIndex: e.detail.current, 
+      currentImageIndex: 0,
+      scrollTop: 0, // 切换成语时重置滚动位置
+      scrollDirection: null
     });
+  },
+
+  onImageSwiperChange: function(e) {
+    this.setData({ currentImageIndex: e.detail.current });
   }
 });
+

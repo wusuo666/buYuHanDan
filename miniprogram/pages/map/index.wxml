@@ -3,14 +3,13 @@
   <map 
     id="idiomMap" 
     class="map" 
-    latitude="{{latitude}}" 
-    longitude="{{longitude}}" 
-    scale="{{scale}}" 
+    latitude="{{latitude}}"
+    longitude="{{longitude}}"
+    scale="{{scale}}"
     markers="{{markers}}"
     show-location
     bindmarkertap="onMarkerTap"
   >
-    <!-- 地图控件：定位到邯郸 -->
     <cover-view class="controls-container">
       <cover-view class="control-item" bindtap="moveToHandan">
         <cover-image src="/images/location-icon.png" class="control-icon"></cover-image>
@@ -18,73 +17,133 @@
       </cover-view>
     </cover-view>
   </map>
-
-  <!-- 自定义弹窗 -->
   <view wx:if="{{showPopup}}" class="popup-mask" bindtap="closePopup">
-    <view class="popup-content" catchtap="stopPropagation">
-      <!-- 弹窗头部 -->
-      <view class="popup-header">
-        <text class="idiom-title">{{currentIdiom.name || '成语详情'}}</text>
-        <text class="close-btn" bindtap="closePopup">×</text>
-      </view>
-      
-      <!-- 弹窗内容 -->
-      <scroll-view class="popup-body" scroll-y>
-        <!-- 景点信息 -->
-        <view class="info-item" wx:if="{{currentIdiom.scenicSpot}}">
-          <text class="label">相关景点：</text>
-          <text class="value">{{currentIdiom.scenicSpot}}</text>
-        </view>
-        
-        <!-- 地址信息 -->
-        <view class="info-item" wx:if="{{currentIdiom.address}}">
-          <text class="label">地址：</text>
-          <text class="value">{{currentIdiom.address}}</text>
-        </view>
-        
-        <!-- 位置坐标 -->
-        <view class="info-item" wx:if="{{currentIdiom.location}}">
-          <text class="label">位置：</text>
-          <text class="value">{{currentIdiom.location}}</text>
-        </view>
-        
-        <!-- 故事内容 -->
-        <view class="info-item" wx:if="{{currentIdiom.story}}">
-          <text class="label">故事：</text>
-          <text class="value">{{currentIdiom.story}}</text>
-        </view>
-        
-        <!-- 关联人物 -->
-        <view class="info-item" wx:if="{{currentIdiom.relatedCharacters && currentIdiom.relatedCharacters.length}}">
-          <text class="label">关联人物：</text>
-          <text class="value">{{currentIdiom.relatedCharacters.join('、')}}</text>
-        </view>
-        
-        <!-- 故事片段 -->
-        <view class="info-item" wx:if="{{currentIdiom.storySegments && currentIdiom.storySegments.length}}">
-          <text class="label">故事片段：</text>
-          <view class="segments-container">
-            <block wx:for="{{currentIdiom.storySegments}}" wx:key="index">
-              <text class="segment-item">{{index + 1}}.{{item}}</text>
-            </block>
-          </view>
-        </view>
-        
-        <!-- 图片展示 -->
-        <view class="info-item" wx:if="{{currentIdiom.images && currentIdiom.images.length}}">
-          <text class="label">相关图片：</text>
-          <scroll-view class="images-scroll" scroll-x>
-            <block wx:for="{{currentIdiom.images}}" wx:key="index">
-              <image class="idiom-image" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-url="{{item}}"></image>
-            </block>
-          </scroll-view>
-        </view>
-      </scroll-view>
+    <view class="popup-swiper-container">
+      <swiper 
+        class="idiom-swiper"
+        current="{{currentIdiomIndex}}" 
+        bindchange="onSwiperChange"
+        circular="{{false}}"
+        duration="300"
+        bindtouchstart="onSwiperTouchStart"
+        bindtouchmove="onSwiperTouchMove"
+        bindtouchend="onSwiperTouchEnd"
+      >
+        <block wx:for="{{currentIdioms}}" wx:key="index">
+          <swiper-item>
+            <view class="popup-content" catchtap="stopPropagation">
+              <!-- 弹窗头部 -->
+              <view class="popup-header">
+                <text class="idiom-title">{{item.name || '成语详情'}}</text>
+                <view class="header-indicator">
+                  <text class="indicator-text">{{currentIdiomIndex + 1}}/{{currentIdioms.length}}</text>
+                  <view class="indicator-dots">
+                    <block wx:for="{{currentIdioms}}" wx:key="index">
+                      <view class="dot {{index === currentIdiomIndex ? 'active' : ''}}"></view>
+                    </block>
+                  </view>
+                </view>
+                <text class="close-btn" bindtap="closePopup">×</text>
+              </view>
+              
+              <!-- 图片轮播区域 -->
+              <view class="image-carousel" wx:if="{{item.images && item.images.length}}">
+                <swiper 
+                  class="image-swiper" 
+                  current="{{currentImageIndex}}" 
+                  bindchange="onImageSwiperChange"
+                  circular="{{true}}"
+                  autoplay="{{true}}"
+                  interval="3000"
+                  duration="300"
+                >
+                  <block wx:for="{{item.images}}" wx:key="index">
+                    <swiper-item>
+                      <image class="carousel-image" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-url="{{item}}"></image>
+                    </swiper-item>
+                  </block>
+                </swiper>
+                <view class="image-indicator" wx:if="{{item.images.length > 1}}">
+                  <text class="image-indicator-text">{{currentImageIndex + 1}}/{{item.images.length}}</text>
+                </view>
+              </view>
+
+              <!-- 内容区域 - 可上下滚动 -->
+              <scroll-view 
+                class="popup-body" 
+                scroll-y 
+                enhanced
+                id="scroll-{{index}}"
+                bindtouchstart="onScrollTouchStart"
+                bindtouchmove="onScrollTouchMove"
+                bindtouchend="onScrollTouchEnd"
+                bindscroll="onScroll"
+              >
+                <!-- 关联人物 -->
+                <view class="info-section" wx:if="{{item.relatedCharacters && item.relatedCharacters.length}}">
+                  <view class="section-header">
+                    <text class="section-icon">👥</text>
+                    <text class="section-title">关联人物</text>
+                  </view>
+                  <view class="characters-container">
+                    <block wx:for="{{item.relatedCharacters}}" wx:key="index">
+                      <text class="character-tag">{{item}}</text>
+                    </block>
+                  </view>
+                </view>
+
+                <!-- 故事片段 -->
+                <view class="info-section" wx:if="{{item.storySegments && item.storySegments.length}}">
+                  <view class="section-header">
+                    <text class="section-icon">📖</text>
+                    <text class="section-title">故事片段</text>
+                  </view>
+                  <view class="segments-container">
+                    <block wx:for="{{item.storySegments}}" wx:key="index">
+                      <view class="segment-item">
+                        <text class="segment-number">{{index + 1}}.</text>
+                        <text class="segment-text">{{item}}</text>
+                      </view>
+                    </block>
+                  </view>
+                </view>
+
+                <!-- 完整故事 -->
+                <view class="info-section" wx:if="{{item.story}}">
+                  <view class="section-header">
+                    <text class="section-icon">📚</text>
+                    <text class="section-title">完整故事</text>
+                  </view>
+                  <text class="story-text">{{item.story}}</text>
+                </view>
+
+                <!-- 成语发生地 -->
+                <view class="info-section" wx:if="{{item.scenicSpot || item.address}}">
+                  <view class="section-header">
+                    <text class="section-icon">📍</text>
+                    <text class="section-title">成语发生地</text>
+                  </view>
+                  <view class="location-info">
+                    <text class="location-address" wx:if="{{item.address}}">{{item.address}}</text>
+                  </view>
+                </view>
+
+                <!-- 底部留白 -->
+                <view class="bottom-padding"></view>
+              </scroll-view>
+
+              <!-- 滑动提示 -->
+              <view class="swipe-hint" wx:if="{{showSwipeHint && currentIdioms.length > 1}}">
+                <text class="hint-text">← 左右滑动切换成语 →</text>
+              </view>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
     </view>
   </view>
-
-  <!-- 加载提示 -->
   <view wx:if="{{isLoading}}" class="loading-container">
     <text class="loading-text">加载中...</text>
   </view>
 </view>
+
