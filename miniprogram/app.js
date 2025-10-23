@@ -3,10 +3,10 @@ App({
   onLaunch: function () {
     this.globalData = {
       // 云环境占位：开发者在此填写自己的环境 ID
-      env: "cloud1-8gjfo0b251334d85", // e.g. "your-env-id"
+      env: "cloude1-5gnml1jq14e7f39f", // e.g. "your-env-id"
       // 统一集合名称，地图/游戏共用
       collections: {
-        idioms: "idiom",
+        idioms: "idioms",
         routes: "routes", // 导览路线集合
         progress: "progress" // 用户进度/得分集合
       }
