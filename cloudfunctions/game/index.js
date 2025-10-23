@@ -25,6 +25,7 @@ exports.main = async (event, context) => {
           .project({
             story: 1,
             _id: 1, // 返回_id用于后续校验
+            imgUrl: 1
           })
           .end();
 
@@ -94,14 +95,17 @@ exports.main = async (event, context) => {
           })
           .project({
             idiom: 1,
+            imgUrl: 1,
             _id: 0 // 默认会返回_id，如果不需要可以显式设为0
           })
           .end();
 
         if (randomResult.list && randomResult.list.length > 0) {
+          const idiomData = randomResult.list[0];
+          const imageUrl = idiomData.imgUrl && idiomData.imgUrl.length > 0 ? idiomData.imgUrl[0].fileID : '';
           return {
             success: true,
-            idiom: randomResult.list[0]
+            idiom: { ...idiomData, imageUrl: imageUrl }
           };
         } else {
           return {

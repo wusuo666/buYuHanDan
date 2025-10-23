@@ -2,6 +2,8 @@
 Page({
   data: {
     idiomData: null, // 存储从云端获取的完整成语对象
+    images: [], // 存储成语图片URL
+    currentImageIndex: 0, // 当前图片索引
     displayIdiom: [], // 用于显示的成语数组，包含空格
     hiddenIndex: -1, // 被隐藏文字的索引
     userInput: '', // 用户输入
@@ -26,40 +28,70 @@ Page({
         action: 'getRandomIdiom'
       }
     }).then(res => {
-      wx.hideLoading();
-      if (res.result && res.result.success && res.result.idiom) {
-        const idiomData = res.result.idiom;
-        const idiomName = idiomData.idiom; 
-        if (!idiomName || typeof idiomName !== 'string') {
+          wx.hideLoading();
+          if (res.result && res.result.success && res.result.idiom) {
+            const idiomData = res.result.idiom;
+            console.log('云函数返回的idiomData:', idiomData); // 添加这行
+            const idiomName = idiomData.idiom; 
+            if (!idiomName || typeof idiomName !== 'string') {
+              wx.showToast({
+                title: '获取到的成语格式不正确',
+                icon: 'none'
+              });
+              return;
+            }
+            const hiddenIndex = Math.floor(Math.random() * idiomName.length);
+
+            const updateData = (imageUrls = []) => {
+              this.setData({
+                images: imageUrls,
+                idiomData: idiomData,
+                hiddenIndex: hiddenIndex,
+                userInput: '',
+                showResult: false,
+                currentImageIndex: 0
+              }, () => {
+                this.generateDisplayIdiom();
+              });
+            };
+
+            // 如果有图片fileID，则获取临时链接
+            if (idiomData.imgUrl && Array.isArray(idiomData.imgUrl)) {
+              const fileIDs = idiomData.imgUrl.map(item => item.fileID).filter(id => id);
+              if (fileIDs.length > 0) {
+                wx.cloud.getTempFileURL({
+                  fileList: fileIDs
+                }).then(fileRes => {
+                  if (fileRes.fileList && fileRes.fileList.length > 0) {
+                    const urls = fileRes.fileList.map(file => file.tempFileURL);
+                    updateData(urls);
+                  } else {
+                    updateData();
+                  }
+                }).catch(err => {
+                  console.error('获取临时文件URL失败:', err);
+                  updateData();
+                });
+              } else {
+                updateData();
+              }
+            } else {
+              updateData();
+            }
+          } else {
+            wx.showToast({
+              title: res.result.message || '获取成语失败',
+              icon: 'none'
+            });
+          }
+        }).catch(err => {
+          wx.hideLoading();
+          console.error('调用云函数失败', err);
           wx.showToast({
-            title: '获取到的成语格式不正确',
+            title: '网络错误，请重试',
             icon: 'none'
           });
-          return;
-        }
-        const hiddenIndex = Math.floor(Math.random() * idiomName.length);
-
-        this.setData({
-          idiomData: idiomData,
-          hiddenIndex: hiddenIndex,
-          userInput: '',
-          showResult: false,
         });
-        this.generateDisplayIdiom();
-      } else {
-        wx.showToast({
-          title: res.result.message || '获取成语失败',
-          icon: 'none'
-        });
-      }
-    }).catch(err => {
-      wx.hideLoading();
-      console.error('调用云函数失败', err);
-      wx.showToast({
-        title: '网络错误，请重试',
-        icon: 'none'
-      });
-    });
   },
 
   // 生成用于显示的成语数组
@@ -109,5 +141,9 @@ Page({
   // 获取下一题
   getNextIdiom: function () {
     this.getRandomIdiomFromServer();
+  },
+
+  onImageSwiperChange: function(e) {
+    this.setData({ currentImageIndex: e.detail.current });
   }
 });

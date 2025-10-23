@@ -2,6 +2,8 @@ Page({
   data: {
     story: '',
     idiomId: '',
+    images: [],
+    currentImageIndex: 0,
     inputValue: '',
     showModal: false,
     isCorrect: false,
@@ -21,12 +23,31 @@ Page({
       },
       success: res => {
         if (res.result.success) {
+          const idiomData = res.result.data;
           this.setData({
-            story: res.result.data.story,
-            idiomId: res.result.data._id,
+            story: idiomData.story,
+            idiomId: idiomData._id,
             inputValue: '',
-            showModal: false
+            showModal: false,
+            images: [],
+            currentImageIndex: 0
           });
+
+          if (idiomData.imgUrl && Array.isArray(idiomData.imgUrl)) {
+            const fileIDs = idiomData.imgUrl.map(item => item.fileID).filter(id => id);
+            if (fileIDs.length > 0) {
+              wx.cloud.getTempFileURL({
+                fileList: fileIDs
+              }).then(fileRes => {
+                if (fileRes.fileList && fileRes.fileList.length > 0) {
+                  const urls = fileRes.fileList.map(file => file.tempFileURL);
+                  this.setData({ images: urls });
+                }
+              }).catch(err => {
+                console.error('获取临时文件URL失败:', err);
+              });
+            }
+          }
         } else {
           wx.showToast({
             title: '获取故事失败',
@@ -100,5 +121,9 @@ Page({
 
   getNext: function () {
     this.getStoryIdiom();
+  },
+
+  onImageSwiperChange: function(e) {
+    this.setData({ currentImageIndex: e.detail.current });
   }
 });
