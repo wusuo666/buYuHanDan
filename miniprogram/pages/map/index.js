@@ -150,7 +150,7 @@ Page({
       wx.showLoading({ title: '加载成语地点中...' });
       this.setData({ isLoading: true });
 
-      const res = await db.collection('idiom')
+      const res = await db.collection('idioms')
         .where({ location: db.command.exists(true) })
         .get();
 

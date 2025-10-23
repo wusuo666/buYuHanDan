@@ -15,7 +15,7 @@ exports.main = async (event, context) => {
   switch (action) {
     case 'getStoryIdiom':     //获取成语故事云函数，对应成语故事匹配游戏
       try {
-        const randomResult = await db.collection('idiom').aggregate()
+        const randomResult = await db.collection('idioms').aggregate()
           .match({
             story: db.command.neq(null) // 确保story字段存在且不为null
           })
@@ -59,7 +59,7 @@ exports.main = async (event, context) => {
           };
         }
 
-        const result = await db.collection('idiom').doc(idiomId).get();
+        const result = await db.collection('idioms').doc(idiomId).get();
 
         if (result.data) {
           const correct = result.data.idiom === userAnswer;
@@ -88,7 +88,7 @@ exports.main = async (event, context) => {
     case 'getRandomIdiom':   //获取随机成语云函数，对应成语填空游戏
       try {
         // 优化：使用 projection 只返回必需的 idiom 字段和 _id
-        const randomResult = await db.collection('idiom').aggregate()
+        const randomResult = await db.collection('idioms').aggregate()
           .sample({
             size: 1
           })
@@ -119,7 +119,7 @@ exports.main = async (event, context) => {
     case 'getGameData':   //成语地点匹配游戏云函数
       try {
         const count = event.count || 2; // 默认获取2个，可根据需要传入event.count来获取更多
-        const gameData = await db.collection('idiom').aggregate()
+        const gameData = await db.collection('idioms').aggregate()
           .sample({
             size: count
           })
